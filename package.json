@@ -10,16 +10,30 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:docsify-preview.createServer"
+    "onLanguage:markdown"
   ],
   "main": "./src/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "docsify-preview.createServer",
-        "title": "Create docsify server"
+        "command": "docsify-preview.sidePreview",
+        "title": "Show side preview",
+        "category": "menubar",
+        "icon": {
+          "light": "./assets/Preview.svg",
+          "dark": "./assets/Preview_inverse.svg"
+        }
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "docsify-preview.sidePreview",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",

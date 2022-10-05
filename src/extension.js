@@ -9,7 +9,7 @@ function activate(context) {
   );
 
   let disposable = vscode.commands.registerCommand(
-    "docsify-preview.createServer",
+    "docsify-preview.sidePreview",
     main
   );
 
