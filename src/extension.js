@@ -10,7 +10,7 @@ function activate(context) {
 
   let disposable = vscode.commands.registerCommand(
     "docsify-preview.sidePreview",
-    main
+    async () => main(context)
   );
 
   context.subscriptions.push(disposable);
