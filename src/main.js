@@ -39,7 +39,9 @@ async function showInVSCode() {
       retainContextWhenHidden: true,
     }
   );
-  panel.webview.html = await getHtmlContent("http://localhost:8080/");
+  panel.webview.html = await getHtmlContent(
+    "http://localhost:8080/#/ch01/README"
+  );
 }
 
 module.exports = {

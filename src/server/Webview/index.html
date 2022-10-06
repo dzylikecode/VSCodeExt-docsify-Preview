@@ -8,7 +8,7 @@
       body,
       html,
       iframe {
-        height: calc(100% - 2px);
+        height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
@@ -16,6 +16,7 @@
     </style>
   </head>
   <body>
-    <iframe src="${url}" allowTransparency="false" frameborder="0"></iframe>
+    <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>
+    <script src="${main}"></script>
   </body>
 </html>

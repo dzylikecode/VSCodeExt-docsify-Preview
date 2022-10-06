@@ -1,5 +1,19 @@
 # docsify preview
 
+## 基本思路
+
+```markmap
+# 思路
+- 点击按钮 => 建立一个服务器, 打开一个视图
+- 服务器监听
+
+  当前markdown路径
+
+  当前markdown的滚动条
+
+  如果当前文件保存, 则会重新reload
+```
+
 ## reference
 
 - [HTTP Server / HTML Preview](https://marketplace.visualstudio.com/items?itemName=Flixs.vs-code-http-server-and-html-preview)
