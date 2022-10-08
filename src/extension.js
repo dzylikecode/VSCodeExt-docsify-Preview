@@ -1,13 +1,9 @@
 const vscode = require("vscode");
 const { main } = require("./main.js");
-/**
- * @param {vscode.ExtensionContext} context
- */
-function activate(context) {
-  console.log(
-    'Congratulations, your extension "docsify-preview" is now active!'
-  );
+const config = require("./config.js");
 
+function activate(context) {
+  config.init(context);
   let disposable = vscode.commands.registerCommand(
     "docsify-preview.sidePreview",
     async () => main(context)
