@@ -41,9 +41,12 @@
       }
       function updateScroll(linePercent) {
         let curWindow = iframe.contentWindow;
+
         // Uncaught DOMException: Blocked a frame with origin "vscode-webview:" from accessing a cross-origin frame.
         // 设置代理试试
-        let curDocument = curWindow.document;
+        console.log(iframe);
+        console.log(curWindow);
+        let curDocument = iframe.contentDocument;
         const nextPosition = curDocument.body.scrollHeight * linePercent;
         curWindow.scroll(0, Math.ceil(nextPosition));
       }
