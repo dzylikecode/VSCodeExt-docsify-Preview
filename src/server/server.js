@@ -29,6 +29,9 @@ const server = {
   jump(url) {
     this.postMessage({ command: "jump", url: url });
   },
+  setTitile(title) {
+    this.panel.title = title;
+  },
 };
 
 module.exports = server;

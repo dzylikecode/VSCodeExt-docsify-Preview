@@ -29,11 +29,23 @@
           case "jump":
             loadFrame(message.url);
             break;
+          case "scroll":
+            console.log(window.location);
+            updateScroll(message.linePercent);
+            break;
         }
       });
 
       function loadFrame(url) {
         iframe.src = url;
+      }
+      function updateScroll(linePercent) {
+        let curWindow = iframe.contentWindow;
+        // Uncaught DOMException: Blocked a frame with origin "vscode-webview:" from accessing a cross-origin frame.
+        // 设置代理试试
+        let curDocument = curWindow.document;
+        const nextPosition = curDocument.body.scrollHeight * linePercent;
+        curWindow.scroll(0, Math.ceil(nextPosition));
       }
     </script>
   </body>
