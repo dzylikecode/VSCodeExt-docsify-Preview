@@ -14,6 +14,10 @@
   如果当前文件保存, 则会重新reload
 ```
 
+## issue
+
+postMessage 不起作用 https://htmldom.dev/communication-between-an-iframe-and-its-parent-window/
+
 ## reference
 
 - [HTTP Server / HTML Preview](https://marketplace.visualstudio.com/items?itemName=Flixs.vs-code-http-server-and-html-preview)
