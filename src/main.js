@@ -5,7 +5,7 @@ const server = require("./server/server.js");
 async function main(context) {
   vscode.window.showInformationMessage("Hello World from docsify-Preview!");
   server.init();
-  server.jump("http://127.0.0.1:55109/docs/#/");
+  server.jump("http://127.0.0.1:5500/docs/#/");
   vscode.window.onDidChangeTextEditorVisibleRanges(
     ({ textEditor, visibleRanges }) => {
       if (textEditor.document.languageId === "markdown") {

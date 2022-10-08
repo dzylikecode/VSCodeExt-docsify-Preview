@@ -30,8 +30,12 @@
             loadFrame(message.url);
             break;
           case "scroll":
-            console.log(window.location);
+            console.log(message.linePercent);
             updateScroll(message.linePercent);
+            break;
+          case "dzLog":
+            console.log("dzLog");
+            console.log(message.linePercent);
             break;
         }
       });
@@ -40,12 +44,10 @@
         iframe.src = url;
       }
       function updateScroll(linePercent) {
-        let curWindow = iframe.contentWindow;
-        // Uncaught DOMException: Blocked a frame with origin "vscode-webview:" from accessing a cross-origin frame.
-        // 设置代理试试
-        let curDocument = curWindow.document;
-        const nextPosition = curDocument.body.scrollHeight * linePercent;
-        curWindow.scroll(0, Math.ceil(nextPosition));
+        iframe.contentWindow.postMessage({
+          command: "scroll",
+          linePercent: linePercent,
+        });
       }
     </script>
   </body>
