@@ -1,6 +1,8 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const config = require("../config.js");
+const express = require("express");
+const app = express();
 // 最好能使用单例模式就好了
 const server = {
   init() {
