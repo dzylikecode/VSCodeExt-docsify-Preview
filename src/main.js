@@ -3,25 +3,51 @@ const path = require("path");
 const fs = require("fs");
 const server = require("./server/server.js");
 const config = require("./config.js");
-async function main(context) {
+
+let isClosed = false;
+
+async function main(context, disposable) {
+  isClosed = false;
   vscode.window.showInformationMessage("Hello World from docsify-Preview!");
-  server.init(config.host, config.port);
+  server.create(config.host, config.port);
   server.jump(
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
   );
-  scrollServer(vscode.window.activeTextEditor);
+  server.onMessage((socket, message) => {
+    if (message.command === "requsetScroll") {
+      let textEditor = vscode.window.activeTextEditor;
+      let sendMessage = JSON.stringify({
+        command: "scroll",
+        linePercent:
+          (textEditor.visibleRanges[0].start.line - 1) /
+          textEditor.document.lineCount,
+      });
+      socket.send(sendMessage);
+    }
+  });
+
   vscode.workspace.onDidSaveTextDocument(() => {
-    server.reload();
+    if (!isClosed) {
+      server.reload();
+    }
   });
   vscode.window.onDidChangeActiveTextEditor(await handleTextDocumentChange);
   vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
-    if (textEditor.document.languageId === "markdown") {
-      scrollServer(textEditor);
+    if (!isClosed) {
+      if (textEditor.document.languageId === "markdown") {
+        scrollServer(textEditor);
+      }
     }
+  });
+  server.onClose(() => {
+    isClosed = true;
   });
 }
 
 async function handleTextDocumentChange() {
+  if (isClosed) {
+    return;
+  }
   if (vscode.window.activeTextEditor && checkDocumentIsMarkdown()) {
     const filePath = vscode.window.activeTextEditor.document.fileName;
     const workspacePath = config.workspacePath;
@@ -42,9 +68,11 @@ function scrollServer(textEditor) {
 }
 
 function parseUrl(rootUrl, filePath = "") {
-  rootUrl = path.join(rootUrl, "#");
-  let urlRelative = path.relative(config.docsifyRootPath, filePath);
-  return path.join(rootUrl, urlRelative);
+  rootUrl = new URL("#/", rootUrl).href;
+  let urlRelative = path
+    .relative(config.docsifyRootPath, filePath)
+    .replace(/\\/g, "/");
+  return rootUrl + urlRelative;
 }
 
 function getDocumentType() {

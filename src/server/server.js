@@ -2,10 +2,9 @@ const httpServer = require("./httpServer.js");
 const webViewServer = require("./webViewServer.js");
 
 let server = {
-  init(host, port) {
-    httpServer.init(host, port);
-    webViewServer.init();
-    webViewServer.onClose(() => httpServer.close());
+  create(host, port) {
+    httpServer.create(host, port);
+    webViewServer.create();
   },
   jump(url) {
     webViewServer.jump(url);
@@ -16,8 +15,17 @@ let server = {
   setTitile(title) {
     webViewServer.setTitile(title);
   },
-  reload() {
+  reload(callback) {
     httpServer.postMessage({ command: "reload" });
+  },
+  postMessage(message) {
+    httpServer.postMessage(message);
+  },
+  onMessage(callback) {
+    httpServer.onMessage(callback);
+  },
+  onClose(callback) {
+    webViewServer.onClose(callback);
   },
 };
 
