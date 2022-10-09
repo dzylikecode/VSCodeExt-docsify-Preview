@@ -13,6 +13,9 @@ let server = {
   scroll(linePercent) {
     httpServer.scroll(linePercent);
   },
+  setTitile(title) {
+    webViewServer.setTitile(title);
+  },
 };
 
 module.exports = server;

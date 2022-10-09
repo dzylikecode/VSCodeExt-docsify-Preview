@@ -46,7 +46,6 @@ class WebSocketServer {
         console.log("Socket disconnected");
         this.sockets.splice(this.sockets.indexOf(socket), 1);
       };
-      this.postMessage({ command: "jump", url: indexFilePath });
     });
   }
 }
@@ -58,14 +57,10 @@ let httpServer = {
     app.use("/", (request, response) => {
       let url = decodeURI(request.originalUrl);
       if (url == "/") {
-        let httpServerHtml = fs.readFileSync(
-          config.httpServerHtmlPath,
-          "utf-8"
-        );
-        response.send(httpServerHtml);
+        response.sendFile(workspacePath + config.indexFilePath);
         return;
       }
-      response.sendFile(workspacePath + url);
+      response.sendFile(workspacePath + "/docs" + url);
     });
     this.server = http.createServer(app);
     this.websocketServer = new WebSocketServer(this.server, indexFilePath);
