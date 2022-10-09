@@ -5,8 +5,7 @@ const server = require("./server/server.js");
 const config = require("./config.js");
 async function main(context) {
   vscode.window.showInformationMessage("Hello World from docsify-Preview!");
-  const workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-  server.init(workspacePath, config.indexFilePath, config.host, config.port);
+  server.init(config.host, config.port);
   server.jump(parseUrl(config.rootUrl));
   vscode.window.onDidChangeActiveTextEditor(await handleTextDocumentChange);
   vscode.window.onDidChangeTextEditorVisibleRanges(
@@ -23,12 +22,12 @@ async function main(context) {
 async function handleTextDocumentChange() {
   if (vscode.window.activeTextEditor && checkDocumentIsMarkdown()) {
     const filePath = vscode.window.activeTextEditor.document.fileName;
-    const workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const workspacePath = config.workspacePath;
     const relativePath = path
       .relative(workspacePath, filePath)
       .replace(/\\/g, "/");
     server.setTitile(`[Preview] ${relativePath}`);
-    const url = parseUrl(config.rootUrl, relativePath);
+    const url = parseUrl(config.rootUrl, filePath);
     server.jump(url);
     scrollServer(
       vscode.window.activeTextEditor.visibleRanges,
@@ -43,8 +42,15 @@ function scrollServer(visibleRanges, textEditor) {
   );
 }
 
-function parseUrl(rootUrl, path = "") {
-  return rootUrl + "#/" + path;
+function parseUrl(rootUrl, filePath = "") {
+  rootUrl = path.join(rootUrl, "#");
+  let urlRelative;
+  if (filePath == "") {
+    urlRelative = "/";
+  } else {
+    urlRelative = path.relative(config.docsifyRootPath, filePath);
+  }
+  return path.join(rootUrl, urlRelative);
 }
 
 function getDocumentType() {

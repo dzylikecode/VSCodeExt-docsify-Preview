@@ -4,12 +4,13 @@ const config = require("../config.js");
 const ws = require("ws");
 const express = require("express");
 const app = express();
+const path = require("path");
 
 class WebSocketServer {
-  constructor(server, indexFilePath) {
+  constructor(server) {
     this.sockets = [];
     this.websocketServer = new ws.Server({ server });
-    this.setupConnectionHandler(indexFilePath);
+    this.setupConnectionHandler();
     console.log("Created websocket, listing");
   }
   postMessage(message) {
@@ -23,22 +24,13 @@ class WebSocketServer {
   scroll(linePercent) {
     this.postMessage({ command: "scroll", linePercent: linePercent });
   }
-  notifyRefresh() {
-    console.log("Notifying clients about refresh");
-    this.sockets.forEach((socket) => {
-      socket.send("refresh", (error) => {
-        if (!error) return;
-        console.error(error);
-      });
-    });
-  }
   close() {
     console.log("Closing websocket");
     this.websocketServer.close();
   }
   ////////////////////////////////////////
   // private
-  setupConnectionHandler(indexFilePath) {
+  setupConnectionHandler() {
     this.websocketServer.on("connection", (socket) => {
       console.log("Socket connected");
       this.sockets.push(socket);
@@ -51,20 +43,27 @@ class WebSocketServer {
 }
 
 let httpServer = {
-  init(workspacePath, indexFilePath, host, port) {
-    this.workspacePath = workspacePath;
-
+  init(host, port) {
     app.use("/", (request, response) => {
       let url = decodeURI(request.originalUrl);
       if (url == "/") {
-        response.sendFile(workspacePath + config.indexFilePath);
+        let html = this.injectCode(
+          this.parseFilePath(config.indexFilePath),
+          config.httpServerHtmlPath
+        );
+        response.send(html);
         return;
       }
-      response.sendFile(workspacePath + "/docs" + url);
+      let filePath = this.parseFilePath(url);
+      if (fs.existsSync(filePath)) {
+        response.sendFile(filePath);
+      } else {
+        console.log("File not found: " + filePath);
+      }
     });
     this.server = http.createServer(app);
-    this.websocketServer = new WebSocketServer(this.server, indexFilePath);
-    this.server.listen(port, () => {
+    this.websocketServer = new WebSocketServer(this.server);
+    this.server.listen(port, host, () => {
       console.log(`Listening on port ${port}`);
     });
   },
@@ -76,7 +75,23 @@ let httpServer = {
   },
   close() {
     this.websocketServer.close();
-    this.server.close();
+    if (this.server) {
+      this.server.close();
+      this.server = null;
+    }
+  },
+  injectCode(docsifyFilePath, httpServerHtmlPath) {
+    let docsifyHtml = fs.readFileSync(docsifyFilePath, "utf8");
+    let httpServerHtml = fs.readFileSync(httpServerHtmlPath, "utf8");
+    let index = docsifyHtml.indexOf("</body>");
+    let newHtml = docsifyHtml.substring(0, index);
+    newHtml += httpServerHtml;
+    newHtml += docsifyHtml.substring(index);
+    return newHtml;
+  },
+  parseFilePath(filePath) {
+    let docsifyFilePath = path.join(config.docsifyRootPath, filePath);
+    return docsifyFilePath;
   },
 };
 
