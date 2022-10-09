@@ -1,0 +1,46 @@
+<iframe id="ws_server" allowTransparency="false" frameborder="0"></iframe>
+<script>
+  const websocket = new WebSocket("ws://" + document.location.host);
+  const iframe = document.getElementById("ws_server");
+
+  websocket.onmessage = (event) => {
+    let message = JSON.parse(event.data);
+    switch (message.command) {
+      case "jump":
+        loadFrame(message.url);
+        break;
+      case "scroll":
+        updateScroll(+message.linePercent);
+        break;
+    }
+    if (event.data == "refresh") {
+      const currScroll =
+        iframe.contentWindow.document.scrollingElement.scrollTop;
+
+      iframe.src = iframe.contentWindow.location.href;
+
+      iframe.onload = (_) => {
+        iframe.contentWindow.document.scrollingElement.scrollTop = currScroll;
+      };
+    }
+  };
+
+  function loadFrame(url) {
+    iframe.src = url;
+  }
+
+  function updateScroll(linePercent) {
+    const nextPosition =
+      iframe.contentWindow.document.body.scrollHeight * linePercent;
+    iframe.contentWindow.scroll(0, Math.ceil(nextPosition));
+  }
+</script>
+<style>
+  body,
+  iframe {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>

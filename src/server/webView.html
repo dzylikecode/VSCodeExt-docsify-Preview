@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple HTTP Server</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body,
+      html,
+      iframe {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>
+    <script>
+      const vscode = acquireVsCodeApi();
+      const iframe = document.getElementById("Server");
+
+      // Handle the message inside the webview
+      window.addEventListener("message", (event) => {
+        const message = event.data; // The JSON data our extension sent
+
+        switch (message.command) {
+          case "jump":
+            loadFrame(message.url);
+            break;
+        }
+      });
+      function loadFrame(url) {
+        iframe.src = url;
+      }
+    </script>
+  </body>
+</html>
