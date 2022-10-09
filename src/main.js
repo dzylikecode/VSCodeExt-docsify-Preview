@@ -9,17 +9,16 @@ async function main(context) {
   server.jump(
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
   );
-  vscode.workspace.onDidSaveTextDocument(() => server.reload());
+  scrollServer(vscode.window.activeTextEditor);
+  vscode.workspace.onDidSaveTextDocument(() => {
+    server.reload();
+  });
   vscode.window.onDidChangeActiveTextEditor(await handleTextDocumentChange);
-  vscode.window.onDidChangeTextEditorVisibleRanges(
-    ({ textEditor, visibleRanges }) => {
-      if (textEditor.document.languageId === "markdown") {
-        server.scroll(
-          (visibleRanges[0].start.line - 1) / textEditor.document.lineCount
-        );
-      }
+  vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
+    if (textEditor.document.languageId === "markdown") {
+      scrollServer(textEditor);
     }
-  );
+  });
 }
 
 async function handleTextDocumentChange() {
@@ -32,16 +31,13 @@ async function handleTextDocumentChange() {
     server.setTitile(`[Preview] ${relativePath}`);
     const url = parseUrl(config.rootUrl, filePath);
     server.jump(url);
-    scrollServer(
-      vscode.window.activeTextEditor.visibleRanges,
-      vscode.window.activeTextEditor
-    );
+    scrollServer(vscode.window.activeTextEditor);
   }
 }
 
-function scrollServer(visibleRanges, textEditor) {
+function scrollServer(textEditor) {
   server.scroll(
-    (visibleRanges[0].start.line - 1) / textEditor.document.lineCount
+    (textEditor.visibleRanges[0].start.line - 1) / textEditor.document.lineCount
   );
 }
 

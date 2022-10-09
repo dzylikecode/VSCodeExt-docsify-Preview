@@ -9,7 +9,7 @@
         updateScroll(+message.linePercent);
         break;
       case "reload":
-        window.location.reload();
+        reloadWindow();
         break;
     }
   };
@@ -17,5 +17,12 @@
   function updateScroll(linePercent) {
     const nextPosition = document.body.scrollHeight * linePercent;
     window.scroll(0, Math.ceil(nextPosition));
+  }
+  function reloadWindow() {
+    const currScroll = document.scrollingElement.scrollTop;
+    window.onload = () => {
+      window.scroll(0, currScroll);
+    };
+    document.location.reload();
   }
 </script>
