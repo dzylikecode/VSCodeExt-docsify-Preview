@@ -1,38 +1,17 @@
-const vscode = require("vscode");
-const fs = require("fs");
-const config = require("../config.js");
-const express = require("express");
-const app = express();
-// 最好能使用单例模式就好了
-const server = {
-  init() {
-    this.panel = vscode.window.createWebviewPanel(
-      // Webview id
-      "docify_Previewer",
-      // Webview title
-      "docsify Preview",
-      // This will open the second column for preview inside editor
-      vscode.ViewColumn.Two,
-      {
-        // Enable scripts in the webview
-        enableScripts: true,
-        retainContextWhenHidden: true,
-      }
-    );
-    try {
-      this.panel.webview.html = fs.readFileSync(config.serverHtmlPath, "utf8");
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  postMessage(message) {
-    this.panel.webview.postMessage(message);
+const httpServer = require("./httpServer.js");
+const webViewServer = require("./webViewServer.js");
+
+let server = {
+  init(workspacePath, indexFilePath, host, port) {
+    httpServer.init(workspacePath, indexFilePath, host, port);
+    webViewServer.init();
+    webViewServer.onClose(() => httpServer.close);
   },
   jump(url) {
-    this.postMessage({ command: "jump", url: url });
+    webViewServer.jump(url);
   },
-  setTitile(title) {
-    this.panel.title = title;
+  scroll(linePercent) {
+    httpServer.scroll(linePercent);
   },
 };
 

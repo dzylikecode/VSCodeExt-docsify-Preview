@@ -4,15 +4,16 @@
   const iframe = document.getElementById("ws_server");
 
   websocket.onmessage = (event) => {
-    let message = event.data;
+    let message = JSON.parse(event.data);
     switch (message.command) {
-      case "setEntry":
-        iframe.src = message.url;
+      case "jump":
+        loadFrame(message.url);
+        break;
+      case "scroll":
+        updateScroll(+message.linePercent);
         break;
     }
     if (event.data == "refresh") {
-      const iframe = document.getElementById("shs_website");
-
       const currScroll =
         iframe.contentWindow.document.scrollingElement.scrollTop;
 
@@ -23,6 +24,16 @@
       };
     }
   };
+
+  function loadFrame(url) {
+    iframe.src = url;
+  }
+
+  function updateScroll(linePercent) {
+    const nextPosition =
+      iframe.contentWindow.document.body.scrollHeight * linePercent;
+    iframe.contentWindow.scroll(0, Math.ceil(nextPosition));
+  }
 </script>
 <style>
   body,

@@ -1,19 +1,27 @@
 const path = require("path");
+const webViewHtmlRelativePath = "src/server/webView.html";
+const httpServerHtmlRelativePath = "src/server/httpServer.html";
+let port = 55109;
+let host = "127.0.0.1";
+let indexFilePath = "/docs/index.html";
 
-const serverHtmlRelativePath = "src/server/Webview/index.html";
-
-let indexFile = "docs/index.html";
-
-let serverHtmlPath;
+let webViewHtmlPath;
+let httpServerHtmlPath;
 
 function init(context) {
   let extensionPath = context.extensionPath;
-  serverHtmlPath = path.join(extensionPath, serverHtmlRelativePath);
+  webViewHtmlPath = path.join(extensionPath, webViewHtmlRelativePath);
+  httpServerHtmlPath = path.join(extensionPath, httpServerHtmlRelativePath);
 }
 module.exports = {
   init,
-  indexFile,
-  get serverHtmlPath() {
-    return serverHtmlPath;
+  indexFilePath,
+  get webViewHtmlPath() {
+    return webViewHtmlPath;
   },
+  get httpServerHtmlPath() {
+    return httpServerHtmlPath;
+  },
+  host,
+  port,
 };

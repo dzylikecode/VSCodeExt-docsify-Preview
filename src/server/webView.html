@@ -29,25 +29,10 @@
           case "jump":
             loadFrame(message.url);
             break;
-          case "scroll":
-            console.log(message.linePercent);
-            updateScroll(message.linePercent);
-            break;
-          case "dzLog":
-            console.log("dzLog");
-            console.log(message.linePercent);
-            break;
         }
       });
-
       function loadFrame(url) {
         iframe.src = url;
-      }
-      function updateScroll(linePercent) {
-        iframe.contentWindow.postMessage({
-          command: "scroll",
-          linePercent: linePercent,
-        });
       }
     </script>
   </body>
