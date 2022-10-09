@@ -6,7 +6,10 @@ const config = require("./config.js");
 async function main(context) {
   vscode.window.showInformationMessage("Hello World from docsify-Preview!");
   server.init(config.host, config.port);
-  server.jump(parseUrl(config.rootUrl));
+  server.jump(
+    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
+  );
+  vscode.workspace.onDidSaveTextDocument(() => server.reload());
   vscode.window.onDidChangeActiveTextEditor(await handleTextDocumentChange);
   vscode.window.onDidChangeTextEditorVisibleRanges(
     ({ textEditor, visibleRanges }) => {
@@ -44,12 +47,7 @@ function scrollServer(visibleRanges, textEditor) {
 
 function parseUrl(rootUrl, filePath = "") {
   rootUrl = path.join(rootUrl, "#");
-  let urlRelative;
-  if (filePath == "") {
-    urlRelative = "/";
-  } else {
-    urlRelative = path.relative(config.docsifyRootPath, filePath);
-  }
+  let urlRelative = path.relative(config.docsifyRootPath, filePath);
   return path.join(rootUrl, urlRelative);
 }
 

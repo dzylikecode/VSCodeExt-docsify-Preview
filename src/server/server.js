@@ -16,6 +16,9 @@ let server = {
   setTitile(title) {
     webViewServer.setTitile(title);
   },
+  reload() {
+    httpServer.postMessage({ command: "reload" });
+  },
 };
 
 module.exports = server;
