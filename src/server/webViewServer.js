@@ -1,8 +1,7 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const config = require("../config.js");
-const express = require("express");
-const app = express();
+const path = require("path");
 // 最好能使用单例模式就好了
 const webViewServer = {
   create() {
@@ -15,6 +14,7 @@ const webViewServer = {
         retainContextWhenHidden: true,
       }
     );
+    this.panel.iconPath = config.panelIconPath;
     try {
       this.panel.webview.html = fs.readFileSync(config.webViewHtmlPath, "utf8");
     } catch (err) {

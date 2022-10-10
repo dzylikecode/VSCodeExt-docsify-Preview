@@ -54,4 +54,7 @@ module.exports = {
   get injectCode() {
     return injectCode;
   },
+  get panelIconPath() {
+    return vscode.Uri.file(path.join(this.extensionPath, "assets/icon.svg"));
+  },
 };
