@@ -1,88 +1,75 @@
 const http = require("http");
 const fs = require("fs");
 const config = require("../config.js");
-const ws = require("ws");
+const listener = require("./listener/listener.js");
 const express = require("express");
 const app = express();
-
-class WebSocketServer {
-  constructor(server, indexFilePath) {
-    this.sockets = [];
-    this.websocketServer = new ws.Server({ server });
-    this.setupConnectionHandler(indexFilePath);
-    console.log("Created websocket, listing");
-  }
-  postMessage(message) {
-    this.sockets.forEach((socket) => {
-      socket.send(JSON.stringify(message), (error) => {
-        if (!error) return;
-        console.error(error);
-      });
-    });
-  }
-  scroll(linePercent) {
-    this.postMessage({ command: "scroll", linePercent: linePercent });
-  }
-  notifyRefresh() {
-    console.log("Notifying clients about refresh");
-    this.sockets.forEach((socket) => {
-      socket.send("refresh", (error) => {
-        if (!error) return;
-        console.error(error);
-      });
-    });
-  }
-  close() {
-    console.log("Closing websocket");
-    this.websocketServer.close();
-  }
-  ////////////////////////////////////////
-  // private
-  setupConnectionHandler(indexFilePath) {
-    this.websocketServer.on("connection", (socket) => {
-      console.log("Socket connected");
-      this.sockets.push(socket);
-      socket.onclose = () => {
-        console.log("Socket disconnected");
-        this.sockets.splice(this.sockets.indexOf(socket), 1);
-      };
-      this.postMessage({ command: "jump", url: indexFilePath });
-    });
-  }
-}
+const path = require("path");
 
 let httpServer = {
-  init(workspacePath, indexFilePath, host, port) {
-    this.workspacePath = workspacePath;
-
-    app.use("/", (request, response) => {
-      let url = decodeURI(request.originalUrl);
-      if (url == "/") {
-        let httpServerHtml = fs.readFileSync(
-          config.httpServerHtmlPath,
-          "utf-8"
-        );
-        response.send(httpServerHtml);
-        return;
-      }
-      response.sendFile(workspacePath + url);
-    });
-    this.server = http.createServer(app);
-    this.websocketServer = new WebSocketServer(this.server, indexFilePath);
-    this.server.listen(port, () => {
+  create(host, port, resolve) {
+    let docsifyHtml = getDocsifyIndexHtml();
+    let html = listener.injectHtml(docsifyHtml);
+    this.server = createServer(html);
+    listener.attach(this.server);
+    this.server.listen(port, host, () => {
       console.log(`Listening on port ${port}`);
+      resolve(true);
     });
+    return;
+    function getDocsifyIndexHtml() {
+      let docsifyIndexHtmlPath = parseFilePath(config.indexFileName);
+      return fs.readFileSync(docsifyIndexHtmlPath, "utf8");
+    }
+    function createServer(html) {
+      let expressApp = createApp(html);
+      let server = http.createServer(expressApp);
+      server.on("error", function (err) {
+        console.log(err);
+        resolve(false);
+      });
+      return server;
+      function createApp(html) {
+        app.use("/", (request, response) => {
+          let url = decodeURI(request.originalUrl);
+          if (url == "/") {
+            response.send(html);
+            return;
+          }
+          let filePath = parseFilePath(url);
+          if (fs.existsSync(filePath)) {
+            response.sendFile(filePath);
+          } else {
+            console.log("File not found: " + filePath);
+          }
+        });
+        return app;
+      }
+    }
   },
   postMessage(message) {
-    this.websocketServer.postMessage(message);
+    if (this.server) {
+      listener.postMessage(message);
+    }
+  },
+  onMessage(callback) {
+    listener.onMessage(callback);
   },
   scroll(linePercent) {
-    this.websocketServer.scroll(linePercent);
+    this.postMessage({ command: "scroll", linePercent: linePercent });
   },
   close() {
-    this.websocketServer.close();
-    this.server.close();
+    listener.close();
+    if (this.server) {
+      this.server.close();
+      this.server = null;
+    }
   },
 };
+
+function parseFilePath(filePath) {
+  let docsifyFilePath = path.join(config.docsifyRootPath, filePath);
+  return docsifyFilePath;
+}
 
 module.exports = httpServer;

@@ -1,0 +1,68 @@
+<!--injected by docsify preivew-->
+<script>
+  window.onbeforeunload = function (e) {
+    localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
+  };
+  // window.onload = () => {
+  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
+  //   let curPos = +scrollpos;
+  //   window.scroll(0, curPos);
+  // };
+  // document.addEventListener("DOMContentLoaded", function (event) {
+  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
+  //   let curPos = +scrollpos;
+  //   // window.scrollTo(0, curPos);
+  //   setTimeout(function () {
+  //     window.scrollTo(0, curPos);
+  //   }, 50);
+  // });
+  const websocket = new WebSocket("ws://" + document.location.host);
+  let isConnected = false;
+  // websocket.onopen = () => {
+  //   console.log("connected");
+  //   isConnected = true;
+  // };
+  websocket.onmessage = (event) => {
+    let message = JSON.parse(event.data);
+    switch (message.command) {
+      case "scroll":
+        updateScroll(+message.linePercent);
+        break;
+      case "reload":
+        reloadWindow();
+        break;
+    }
+  };
+
+  function updateScroll(linePercent) {
+    const nextPosition = document.body.scrollHeight * linePercent;
+    window.scroll(0, Math.ceil(nextPosition));
+  }
+  function reloadWindow() {
+    document.location.reload();
+  }
+</script>
+<script>
+  (function () {
+    if (window.$docsify) {
+      window.$docsify.plugins = [].concat(function (hook, vm) {
+        hook.ready(function () {
+          // this why I can't scroll window directly
+          let scrollpos = localStorage.getItem("scrollpos") ?? 0;
+          let curPos = +scrollpos;
+          window.scroll(0, curPos);
+          // let intervId = setInterval(() => {
+          //   if (isConnected) {
+          //     clearInterval(intervId);
+          //     return;
+          //   }
+          //   let message = JSON.stringify({
+          //     command: "loaded",
+          //   });
+          //   websocket.send(message);
+          // }, 50);
+        });
+      }, window.$docsify.plugins);
+    }
+  })();
+</script>

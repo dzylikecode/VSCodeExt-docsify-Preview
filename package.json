@@ -14,6 +14,25 @@
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "docsify Preview",
+      "type": "object",
+      "properties": {
+        "docsifyPreview.port": {
+          "type": "number",
+          "default": 5500,
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "Set Custom Port Number of docsify Preview"
+        },
+        "docsifyPreview.indexFile": {
+          "type": "string",
+          "default": "/docs/index.html",
+          "pattern": "/|/[^\\/]",
+          "description": "Set Custom index file of Live Server. \nTo change index file, use '/' and relative path from workspace. \nExample: /index.html"
+        }
+      }
+    },
     "commands": [
       {
         "command": "docsify-preview.sidePreview",

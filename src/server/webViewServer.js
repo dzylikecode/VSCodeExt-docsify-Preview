@@ -5,16 +5,12 @@ const express = require("express");
 const app = express();
 // 最好能使用单例模式就好了
 const webViewServer = {
-  init() {
+  create() {
     this.panel = vscode.window.createWebviewPanel(
-      // Webview id
-      "docify_Previewer",
-      // Webview title
-      "docsify Preview",
-      // This will open the second column for preview inside editor
-      vscode.ViewColumn.Two,
+      "docify_Previewer", // Webview id
+      "docsify Preview", // Webview title
+      vscode.ViewColumn.Two, // open the second column for preview inside editor
       {
-        // Enable scripts in the webview
         enableScripts: true,
         retainContextWhenHidden: true,
       }
@@ -26,16 +22,26 @@ const webViewServer = {
     }
   },
   postMessage(message) {
-    this.panel.webview.postMessage(message);
+    if (this.panel) {
+      this.panel.webview.postMessage(message);
+    }
   },
   jump(url) {
     this.postMessage({ command: "jump", url: url });
   },
   setTitile(title) {
-    this.panel.title = title;
+    if (this.panel) {
+      this.panel.title = title;
+    }
   },
   onClose(callback) {
-    this.panel.onDidDispose(callback);
+    this.panel.onDidDispose(() => {
+      callback();
+      this.panel = null;
+    });
+  },
+  close() {
+    this.panel.dispose();
   },
 };
 
