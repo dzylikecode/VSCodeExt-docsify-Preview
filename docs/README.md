@@ -14,6 +14,8 @@
   如果当前文件保存, 则会重新reload
 ```
 
+- open in browser
+
 ## issue
 
 postMessage 不起作用 https://htmldom.dev/communication-between-an-iframe-and-its-parent-window/

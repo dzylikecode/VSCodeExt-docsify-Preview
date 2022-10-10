@@ -6,7 +6,7 @@ const injectedRelativePath = "src/server/listener/injected.html";
 let port = 55109;
 let host = "127.0.0.1";
 let rootUrl;
-let indexFileName = "/index.html";
+let indexFileName = "index.html";
 let docsifyRootPath = "/docs";
 let extensionPath;
 let injectCode;

@@ -7,31 +7,36 @@ const config = require("./config.js");
 let isClosed = false;
 
 async function main(context, disposable) {
-  isClosed = false;
-  vscode.window.showInformationMessage("Hello World from docsify-Preview!");
-  server.create(config.host, config.port);
+  isClosed = !(await server.create(config.host, config.port));
+  if (isClosed) {
+    vscode.window.showInformationMessage(
+      `Docsify Preview: Failed to start server on port ${config.port}`
+    );
+    return;
+  }
   server.jump(
+    // not work becase docsify is not ready
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
   );
-  server.onMessage((socket, message) => {
-    if (message.command === "requsetScroll") {
-      let textEditor = vscode.window.activeTextEditor;
-      let sendMessage = JSON.stringify({
-        command: "scroll",
-        linePercent:
-          (textEditor.visibleRanges[0].start.line - 1) /
-          textEditor.document.lineCount,
-      });
-      socket.send(sendMessage);
-    }
-  });
+  // server.onMessage((socket, message) => {
+  //   if (message.command === "requsetScroll") {
+  //     let textEditor = vscode.window.activeTextEditor;
+  //     let sendMessage = JSON.stringify({
+  //       command: "loaded",
+  //       linePercent:
+  //         (textEditor.visibleRanges[0].start.line - 1) /
+  //         textEditor.document.lineCount,
+  //     });
+  //     socket.send(sendMessage);
+  //   }
+  // });
 
   vscode.workspace.onDidSaveTextDocument(() => {
     if (!isClosed) {
       server.reload();
     }
   });
-  vscode.window.onDidChangeActiveTextEditor(await handleTextDocumentChange);
+  vscode.window.onDidChangeActiveTextEditor(handleTextDocumentChange);
   vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
     if (!isClosed) {
       if (textEditor.document.languageId === "markdown") {

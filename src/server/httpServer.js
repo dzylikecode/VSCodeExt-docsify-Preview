@@ -7,13 +7,16 @@ const app = express();
 const path = require("path");
 
 let httpServer = {
-  create(host, port) {
+  create(host, port, resolve, reject) {
+    this.createResolve = resolve;
+    this.createReject = reject;
     let docsifyHtml = getDocsifyIndexHtml();
     let html = listener.injectHtml(docsifyHtml);
     this.server = createServer(html);
     listener.attach(this.server);
     this.server.listen(port, host, () => {
       console.log(`Listening on port ${port}`);
+      this.createResolve();
     });
     return;
     function getDocsifyIndexHtml() {
@@ -22,7 +25,12 @@ let httpServer = {
     }
     function createServer(html) {
       let expressApp = createApp(html);
-      return http.createServer(expressApp);
+      let server = http.createServer(expressApp);
+      server.on("error", function (err) {
+        console.error(err);
+        this.createReject(err);
+      });
+      return server;
       function createApp(html) {
         app.use("/", (request, response) => {
           let url = decodeURI(request.originalUrl);
@@ -42,13 +50,15 @@ let httpServer = {
     }
   },
   postMessage(message) {
-    listener.postMessage(message);
+    if (this.server) {
+      listener.postMessage(message);
+    }
   },
   onMessage(callback) {
     listener.onMessage(callback);
   },
   scroll(linePercent) {
-    listener.postMessage({ command: "scroll", linePercent: linePercent });
+    this.postMessage({ command: "scroll", linePercent: linePercent });
   },
   close() {
     listener.close();

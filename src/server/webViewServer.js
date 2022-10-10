@@ -22,16 +22,26 @@ const webViewServer = {
     }
   },
   postMessage(message) {
-    this.panel.webview.postMessage(message);
+    if (this.panel) {
+      this.panel.webview.postMessage(message);
+    }
   },
   jump(url) {
     this.postMessage({ command: "jump", url: url });
   },
   setTitile(title) {
-    this.panel.title = title;
+    if (this.panel) {
+      this.panel.title = title;
+    }
   },
   onClose(callback) {
-    this.panel.onDidDispose(callback);
+    this.panel.onDidDispose(() => {
+      callback();
+      this.panel = null;
+    });
+  },
+  close() {
+    this.panel.dispose();
   },
 };
 
