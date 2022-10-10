@@ -7,6 +7,7 @@ const config = require("./config.js");
 let isClosed = false;
 
 async function main(context, disposable) {
+  config.initWorkSpace();
   isClosed = !(await server.create(config.host, config.port));
   if (isClosed) {
     vscode.window.showInformationMessage(

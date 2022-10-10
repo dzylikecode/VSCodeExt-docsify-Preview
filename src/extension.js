@@ -3,7 +3,7 @@ const { main } = require("./main.js");
 const config = require("./config.js");
 
 function activate(context) {
-  config.init(context);
+  config.initExtension(context);
   let disposable = vscode.commands.registerCommand(
     "docsify-preview.sidePreview",
     async () => main(context, disposable)

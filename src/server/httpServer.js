@@ -7,16 +7,14 @@ const app = express();
 const path = require("path");
 
 let httpServer = {
-  create(host, port, resolve, reject) {
-    this.createResolve = resolve;
-    this.createReject = reject;
+  create(host, port, resolve) {
     let docsifyHtml = getDocsifyIndexHtml();
     let html = listener.injectHtml(docsifyHtml);
     this.server = createServer(html);
     listener.attach(this.server);
     this.server.listen(port, host, () => {
       console.log(`Listening on port ${port}`);
-      this.createResolve();
+      resolve(true);
     });
     return;
     function getDocsifyIndexHtml() {
@@ -27,8 +25,8 @@ let httpServer = {
       let expressApp = createApp(html);
       let server = http.createServer(expressApp);
       server.on("error", function (err) {
-        console.error(err);
-        this.createReject(err);
+        console.log(err);
+        resolve(false);
       });
       return server;
       function createApp(html) {

@@ -3,34 +3,44 @@ const fs = require("fs");
 const vscode = require("vscode");
 const webViewHtmlRelativePath = "src/server/webView.html";
 const injectedRelativePath = "src/server/listener/injected.html";
-let port = 55109;
 let host = "127.0.0.1";
-let rootUrl;
-let indexFileName = "index.html";
-let docsifyRootPath = "/docs";
+let indexFileName;
+let docsifyRootPath;
 let extensionPath;
 let injectCode;
 
 let webViewHtmlPath;
 let injectedPath;
 
-function init(context) {
+function initExtension(context) {
   extensionPath = context.extensionPath;
   webViewHtmlPath = path.join(extensionPath, webViewHtmlRelativePath);
   injectedPath = path.join(extensionPath, injectedRelativePath);
-  rootUrl = `http://${host}:${port}/`;
   injectCode = fs.readFileSync(injectedPath, "utf8");
 }
+
+function initWorkSpace() {
+  let docsifyIndexFilePath =
+    vscode.workspace.getConfiguration("docsifyPreview").indexFile;
+  docsifyRootPath = path.dirname(docsifyIndexFilePath);
+  indexFileName = path.basename(docsifyIndexFilePath);
+}
+
 module.exports = {
-  init,
-  indexFileName,
+  initExtension,
+  initWorkSpace,
+  get indexFileName() {
+    return indexFileName;
+  },
   get webViewHtmlPath() {
     return webViewHtmlPath;
   },
   host,
-  port,
+  get port() {
+    return vscode.workspace.getConfiguration("docsifyPreview").port;
+  },
   get rootUrl() {
-    return rootUrl;
+    return `http://${this.host}:${this.port}/`;
   },
   get docsifyRootPath() {
     return path.join(this.workspacePath, docsifyRootPath);
