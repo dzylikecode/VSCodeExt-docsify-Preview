@@ -1,5 +1,9 @@
 # code
 
+- :x: 表示不可行
+- :heavy_check_mark: 表示可行
+- :mag: 表示有待研究
+
 ## 基本概念
 
 - [Webview API](https://code.visualstudio.com/api/extension-guides/webview)
@@ -113,6 +117,17 @@ flowchart LR
 
 > 我不知道为什么不起作用, 就是 iframe 没有接收到消息, 我没有深入研究 :confounded: :confounded: :confounded:
 
+我发现由 iframe 发送消息给父窗口是可行的, 之前不行是因为没有添加`'*'`参数, 而父窗口发送给 iframe, 我好像也是没有添加`'*'`参数, 此参数的含义参见[MDN Window.postMessage()](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+
+```js
+window.parent.window.postMessage(
+  {
+    command: "contextmenu",
+  },
+  "*"
+);
+```
+
 ### model-5
 
 - :mag:
@@ -188,6 +203,36 @@ flowchart LR
 ```
 
 > 碰到问题[reload-时-scroll-不起作用](#reload-时-scroll-不起作用)
+
+## feature
+
+### open in browser
+
+- [Test finalized webview context menu api](https://github.com/microsoft/vscode/issues/161848)
+
+  还在测试阶段
+
+!> context menu 是和 document 绑定的, 所以在`iframe`中捕捉消息
+
+如果在 iframe 中处理 contextmenu 信号, 将导致打开浏览器时候, 也会处理到 contextmenu 信号, 所以, 应该将信号转发给父窗口, 然后打开外部链接
+
+- 参考链接
+
+  - [How to add a custom right-click menu to a webpage?](https://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage)
+
+  - [Adding to browser context menu?](https://stackoverflow.com/questions/4447321/adding-to-browser-context-menu)
+
+  - [How to add a custom right-click menu to a webpage ?](https://www.geeksforgeeks.org/how-to-add-a-custom-right-click-menu-to-a-webpage/)
+
+    尝试了, 不合适
+
+  - [Building a Custom Right-Click (Context) Menu with JavaScript](https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/)
+
+    - Demo: https://codepen.io/SitePoint/pen/MYLoWY
+
+    似乎不错, 但是我没时间去画右键菜单了
+
+简单使用右键即打开网页
 
 ## issue
 
@@ -289,8 +334,4 @@ vscode.workspace
 vscode.workspace.getConfiguration("docsifyPreview").indexFile;
 ```
 
-不是预期的样子
-
-- https://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage
-- https://stackoverflow.com/questions/4447321/adding-to-browser-context-menu
-- https://www.geeksforgeeks.org/how-to-add-a-custom-right-click-menu-to-a-webpage/
+并没有获得立马更新的值

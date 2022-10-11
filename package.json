@@ -34,7 +34,7 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./src/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "configuration": {
       "title": "docsify Preview",
@@ -52,6 +52,11 @@
           "default": "/docs/index.html",
           "pattern": "/|/[^\\/]",
           "description": "Set Custom index file of Live Server. \nTo change index file, use '/' and relative path from workspace. \nExample: /index.html"
+        },
+        "docsifyPreview.rightClickOpenInBrowser.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "right click will open the preview in browser if enable"
         }
       }
     },

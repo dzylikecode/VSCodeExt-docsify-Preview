@@ -63,8 +63,10 @@ async function main(context, disposable) {
     //   });
     //   socket.send(sendMessage);
     // }
-    if (message.command == "contextMenu") {
-      vscode.env.openExternal(server.url);
+    if (message.command == "contextmenu") {
+      if (config.rightClickOpenInBrowser) {
+        vscode.env.openExternal(server.url);
+      }
     }
   });
 
