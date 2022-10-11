@@ -50,6 +50,10 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
 ## Release Notes
 
+### 0.1.0
+
+add input box if configuration is not correct
+
 ### 0.0.1
 
 congratulations!

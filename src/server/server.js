@@ -9,8 +9,8 @@ let server = {
     }
     return res;
     function createHttpServer(host, port) {
-      return new Promise((resolve) => {
-        httpServer.create(host, port, (res) => resolve(res));
+      return new Promise((resolve, reject) => {
+        httpServer.create(host, port, (res) => resolve(res), reject);
       });
     }
   },

@@ -7,14 +7,47 @@ const config = require("./config.js");
 let isClosed = false;
 
 async function main(context, disposable) {
-  config.initWorkSpace();
-  isClosed = !(await server.create(config.host, config.port));
-  if (isClosed) {
-    vscode.window.showInformationMessage(
-      `Docsify Preview: Failed to start server on port ${config.port}`
-    );
-    return;
+  config.getConfigurationForWorkspace();
+  let isConfigured = false;
+  while (isConfigured == false) {
+    config.initWorkspace();
+    try {
+      isClosed = !(await server.create(config.host, config.port));
+      isConfigured = true;
+    } catch (e) {
+      switch (e) {
+        case "PortOccupied":
+          vscode.window.showInformationMessage(
+            `Docsify Preview: Failed to start server on port ${config.port}`
+          );
+          let newPort = await vscode.window.showInputBox({
+            prompt: "Please input a new port",
+            title: "Docsify Preview",
+            value: "" + (config.port + 1),
+          });
+          if (newPort == undefined) {
+            return;
+          }
+          config.port = +newPort;
+          break;
+        case "IndexNotFound":
+          vscode.window.showInformationMessage(
+            `Docsify Preview: ${config.docsifyIndexFilePath} not found`
+          );
+          let newIndexFile = await vscode.window.showInputBox({
+            prompt: "Please input a new index file",
+            title: "Docsify Preview",
+            value: config.docsifyIndexFilePath,
+          });
+          if (newIndexFile == undefined) {
+            return;
+          }
+          config.docsifyIndexFilePath = newIndexFile;
+          break;
+      }
+    }
   }
+
   server.jump(
     // not work becase docsify is not ready
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)

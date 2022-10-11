@@ -266,3 +266,27 @@ Uncaught DOMException: Blocked a frame with origin "vscode-webview://19phs4cus40
     :sparkles: :sparkles: :sparkles:
 
     > 通过插件的形式植入到 docsify 中, 在 docsify 的 `hook.ready` 中执行
+
+### docsify-插件-ready
+
+- 同级目录下没有对应 sidebar 文件的 markdown, 链接是不会执行 docsify 的 hook.ready 函数, 所以滚动条会滚动失败
+
+> 可以尝试使用 hook.mounted 来代替 hook.ready(不可以, 完全失效), 只能添加一个空的 sidebar 文件
+
+### setConfiguration
+
+执行以下代码
+
+```js
+vscode.workspace
+  .getConfiguration("docsifyPreview")
+  .update("indexFile", newPath, false);
+```
+
+然后在`settings.json`中查看, 发现没有更新, 需要过一段时间, 即里面执行下面的代码
+
+```js
+vscode.workspace.getConfiguration("docsifyPreview").indexFile;
+```
+
+不是预期的样子

@@ -7,7 +7,7 @@ const app = express();
 const path = require("path");
 
 let httpServer = {
-  create(host, port, resolve) {
+  create(host, port, resolve, reject) {
     let docsifyHtml = getDocsifyIndexHtml();
     let html = listener.injectHtml(docsifyHtml);
     this.server = createServer(html);
@@ -19,14 +19,17 @@ let httpServer = {
     return;
     function getDocsifyIndexHtml() {
       let docsifyIndexHtmlPath = parseFilePath(config.indexFileName);
-      return fs.readFileSync(docsifyIndexHtmlPath, "utf8");
+      if (fs.existsSync(docsifyIndexHtmlPath) == false) {
+        reject("IndexNotFound");
+      }
+      return fs.readFileSync(docsifyIndexHtmlPath, "utf8"); // TODO: check file
     }
     function createServer(html) {
       let expressApp = createApp(html);
       let server = http.createServer(expressApp);
       server.on("error", function (err) {
         console.log(err);
-        resolve(false);
+        reject("PortOccupied");
       });
       return server;
       function createApp(html) {

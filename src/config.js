@@ -8,9 +8,10 @@ let indexFileName;
 let docsifyRootPath;
 let extensionPath;
 let injectCode;
-
+let port;
 let webViewHtmlPath;
 let injectedPath;
+let docsifyIndexFilePath;
 
 function initExtension(context) {
   extensionPath = context.extensionPath;
@@ -19,16 +20,21 @@ function initExtension(context) {
   injectCode = fs.readFileSync(injectedPath, "utf8");
 }
 
-function initWorkSpace() {
-  let docsifyIndexFilePath =
+function getConfigurationForWorkspace() {
+  port = vscode.workspace.getConfiguration("docsifyPreview").get("port");
+  docsifyIndexFilePath =
     vscode.workspace.getConfiguration("docsifyPreview").indexFile;
+}
+
+function initWorkspace() {
   docsifyRootPath = path.dirname(docsifyIndexFilePath);
   indexFileName = path.basename(docsifyIndexFilePath);
 }
 
 module.exports = {
   initExtension,
-  initWorkSpace,
+  initWorkspace,
+  getConfigurationForWorkspace,
   get indexFileName() {
     return indexFileName;
   },
@@ -37,7 +43,13 @@ module.exports = {
   },
   host,
   get port() {
-    return vscode.workspace.getConfiguration("docsifyPreview").port;
+    return port;
+  },
+  set port(newPort) {
+    port = newPort;
+    vscode.workspace
+      .getConfiguration("docsifyPreview")
+      .update("port", newPort, false);
   },
   get rootUrl() {
     return `http://${this.host}:${this.port}/`;
@@ -56,5 +68,14 @@ module.exports = {
   },
   get panelIconPath() {
     return vscode.Uri.file(path.join(this.extensionPath, "assets/icon.svg"));
+  },
+  get docsifyIndexFilePath() {
+    return docsifyIndexFilePath;
+  },
+  set docsifyIndexFilePath(newPath) {
+    docsifyIndexFilePath = newPath;
+    vscode.workspace
+      .getConfiguration("docsifyPreview")
+      .update("indexFile", newPath, false);
   },
 };
