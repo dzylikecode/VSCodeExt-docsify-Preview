@@ -15,6 +15,8 @@
 
 - open in browser
 
+  `vscode.env.openExternal(link)`
+
 ## issue
 
 postMessage 不起作用 https://htmldom.dev/communication-between-an-iframe-and-its-parent-window/
