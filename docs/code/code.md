@@ -290,3 +290,7 @@ vscode.workspace.getConfiguration("docsifyPreview").indexFile;
 ```
 
 不是预期的样子
+
+- https://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage
+- https://stackoverflow.com/questions/4447321/adding-to-browser-context-menu
+- https://www.geeksforgeeks.org/how-to-add-a-custom-right-click-menu-to-a-webpage/
