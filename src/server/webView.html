@@ -20,6 +20,7 @@
     <script>
       const vscode = acquireVsCodeApi();
       const iframe = document.getElementById("Server");
+      console.log("Hello, Webview!");
 
       // Handle the message inside the webview
       window.addEventListener("message", (event) => {
@@ -28,6 +29,12 @@
         switch (message.command) {
           case "jump":
             loadFrame(message.url);
+            break;
+          case "contextmenu":
+            console.log("contextmenu");
+            vscode.postMessage({
+              command: "contextmenu",
+            });
             break;
         }
       });

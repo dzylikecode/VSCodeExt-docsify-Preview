@@ -51,6 +51,7 @@
           let scrollpos = localStorage.getItem("scrollpos") ?? 0;
           let curPos = +scrollpos;
           window.scroll(0, curPos);
+          // I want to inform vscode that the page is ready
           // let intervId = setInterval(() => {
           //   if (isConnected) {
           //     clearInterval(intervId);
@@ -65,4 +66,23 @@
       }, window.$docsify.plugins);
     }
   })();
+</script>
+<script>
+  document.addEventListener(
+    "contextmenu",
+    function (e) {
+      // console.log(e);
+      window.parent.window.postMessage(
+        {
+          command: "contextmenu",
+          // event: {
+          //   pageX: e.pageX,
+          //   pageY: e.pageY,
+          // },
+        },
+        "*"
+      );
+    },
+    false
+  );
 </script>

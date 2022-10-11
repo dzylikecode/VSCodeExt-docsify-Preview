@@ -42,6 +42,10 @@ If you want to paste images in markdown, welcome to use my another plugin:[md-pa
 
   - Default value is `/docs/index.html`
 
+- `docsifyPreview.rightClickOpenInBrowser.enable`: right click will open the preview in browser if enable
+
+  - Default value is `true`
+
 ## Known Issues
 
 The scroll will be put at the wrong position when openning the `docsify Preivew` the first time. So you must scroll the markdown slightly to make the scroll at the right position. Hope this issue will be fixed in the future, and you are tolerant to this issue.
@@ -50,9 +54,13 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
 ## Release Notes
 
+### 0.2.0
+
+feature: right click will open the preview in browser
+
 ### 0.1.0
 
-add input box if configuration is not correct
+feature: add input box if configuration is not correct
 
 ### 0.0.1
 

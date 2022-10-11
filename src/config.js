@@ -78,4 +78,9 @@ module.exports = {
       .getConfiguration("docsifyPreview")
       .update("indexFile", newPath, false);
   },
+  get rightClickOpenInBrowser() {
+    return vscode.workspace
+      .getConfiguration("docsifyPreview")
+      .get("rightClickOpenInBrowser").enable;
+  },
 };

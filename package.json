@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -52,6 +52,11 @@
           "default": "/docs/index.html",
           "pattern": "/|/[^\\/]",
           "description": "Set Custom index file of Live Server. \nTo change index file, use '/' and relative path from workspace. \nExample: /index.html"
+        },
+        "docsifyPreview.rightClickOpenInBrowser.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "right click will open the preview in browser if enable"
         }
       }
     },

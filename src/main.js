@@ -52,18 +52,23 @@ async function main(context, disposable) {
     // not work becase docsify is not ready
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
   );
-  // server.onMessage((socket, message) => {
-  //   if (message.command === "requsetScroll") {
-  //     let textEditor = vscode.window.activeTextEditor;
-  //     let sendMessage = JSON.stringify({
-  //       command: "loaded",
-  //       linePercent:
-  //         (textEditor.visibleRanges[0].start.line - 1) /
-  //         textEditor.document.lineCount,
-  //     });
-  //     socket.send(sendMessage);
-  //   }
-  // });
+  server.onMessage((socket, message) => {
+    // if (message.command === "requsetScroll") {
+    //   let textEditor = vscode.window.activeTextEditor;
+    //   let sendMessage = JSON.stringify({
+    //     command: "loaded",
+    //     linePercent:
+    //       (textEditor.visibleRanges[0].start.line - 1) /
+    //       textEditor.document.lineCount,
+    //   });
+    //   socket.send(sendMessage);
+    // }
+    if (message.command == "contextmenu") {
+      if (config.rightClickOpenInBrowser) {
+        vscode.env.openExternal(server.url);
+      }
+    }
+  });
 
   vscode.workspace.onDidSaveTextDocument(() => {
     if (!isClosed) {
