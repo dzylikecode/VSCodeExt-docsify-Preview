@@ -1,6 +1,7 @@
 const vscode = require("vscode");
 const { main } = require("./main.js");
 const config = require("./config.js");
+const server = require("./server/server.js");
 
 function activate(context) {
   config.initExtension(context);

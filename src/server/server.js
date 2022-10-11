@@ -16,6 +16,7 @@ let server = {
   },
   jump(url) {
     webViewServer.jump(url);
+    this.url = url;
   },
   scroll(linePercent) {
     httpServer.scroll(linePercent);
@@ -31,6 +32,7 @@ let server = {
   },
   onMessage(callback) {
     httpServer.onMessage(callback);
+    webViewServer.onMessage(callback);
   },
   onClose(callback) {
     webViewServer.onClose(() => {

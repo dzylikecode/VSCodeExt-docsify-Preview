@@ -6,7 +6,7 @@ const path = require("path");
 const webViewServer = {
   create() {
     this.panel = vscode.window.createWebviewPanel(
-      "docify_Previewer", // Webview id
+      "docsifyPreviewer", // Webview id
       "docsify Preview", // Webview title
       vscode.ViewColumn.Two, // open the second column for preview inside editor
       {
@@ -25,6 +25,11 @@ const webViewServer = {
     if (this.panel) {
       this.panel.webview.postMessage(message);
     }
+  },
+  onMessage(callback) {
+    this.panel.webview.onDidReceiveMessage((message) => {
+      callback(null, message);
+    });
   },
   jump(url) {
     this.postMessage({ command: "jump", url: url });

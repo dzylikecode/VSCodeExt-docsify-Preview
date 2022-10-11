@@ -35,5 +35,17 @@
         iframe.src = url;
       }
     </script>
+    <script>
+      document.addEventListener(
+        "contextmenu",
+        function (e) {
+          vscode.postMessage({
+            command: "contextmenu",
+          });
+          e.preventDefault();
+        },
+        false
+      );
+    </script>
   </body>
 </html>
