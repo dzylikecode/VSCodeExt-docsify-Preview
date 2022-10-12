@@ -25,7 +25,7 @@
 
   function updateScroll(linePercent) {
     const nextPosition = document.body.scrollHeight * linePercent;
-    window.scroll(0, Math.ceil(nextPosition));
+    window.scroll(0, nextPosition);
   }
   function reloadWindow() {
     document.location.reload();
@@ -81,10 +81,34 @@
       window.parent.window.postMessage(
         {
           command: "contextmenu",
+          event: {
+            x: e.x,
+            y: e.y,
+          },
         },
         "*"
       );
     },
     false
   );
+  window.onclick = function (e) {
+    console.log(e);
+    window.parent.window.postMessage(
+      {
+        command: "click",
+      },
+      "*"
+    );
+  };
 </script>
+<script>
+  window.onscroll = function (event) {
+    window.parent.window.postMessage(
+      {
+        command: "scroll",
+      },
+      "*"
+    );
+  };
+</script>
+<!-- end for docsify preview -->
