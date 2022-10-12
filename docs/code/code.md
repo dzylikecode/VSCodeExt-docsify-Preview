@@ -208,6 +208,8 @@ flowchart LR
 
 ### open in browser
 
+- :heavy_check_mark:
+
 - [Test finalized webview context menu api](https://github.com/microsoft/vscode/issues/161848)
 
   还在测试阶段
@@ -233,6 +235,10 @@ flowchart LR
     似乎不错, 但是我没时间去画右键菜单了
 
 简单使用右键即打开网页
+
+### editor syncs with preview
+
+> see details [here](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/pull/9)
 
 ## issue
 

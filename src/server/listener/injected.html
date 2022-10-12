@@ -1,28 +1,17 @@
 <!--injected by docsify preivew-->
 <script>
+  const log = (msg) => console.log("localhost: " + msg);
   window.onbeforeunload = function (e) {
     localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
   };
-  // window.onload = () => {
-  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
-  //   let curPos = +scrollpos;
-  //   window.scroll(0, curPos);
-  // };
-  // document.addEventListener("DOMContentLoaded", function (event) {
-  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
-  //   let curPos = +scrollpos;
-  //   // window.scrollTo(0, curPos);
-  //   setTimeout(function () {
-  //     window.scrollTo(0, curPos);
-  //   }, 50);
-  // });
   const websocket = new WebSocket("ws://" + document.location.host);
   let isConnected = false;
-  // websocket.onopen = () => {
-  //   console.log("connected");
-  //   isConnected = true;
-  // };
+  websocket.onopen = () => {
+    log("connected");
+    isConnected = true;
+  };
   websocket.onmessage = (event) => {
+    log(event.data);
     let message = JSON.parse(event.data);
     switch (message.command) {
       case "scroll":
@@ -46,6 +35,23 @@
   (function () {
     if (window.$docsify) {
       window.$docsify.plugins = [].concat(function (hook, vm) {
+        hook.beforeEach(function (html) {
+          let filePath = decodeURI(vm.route.path);
+          // .md 结尾说明消息来自vscode的请求
+          if (filePath.endsWith(".md") == false) {
+            //将不是vscode的跳转请求发送给vscode
+            if (filePath.endsWith("/")) {
+              filePath += "README";
+            }
+            filePath += ".md";
+            window.parent.window.postMessage(
+              { command: "loaded", url: filePath },
+              "*"
+            );
+          }
+          return html;
+        });
+
         hook.ready(function () {
           // this why I can't scroll window directly
           let scrollpos = localStorage.getItem("scrollpos") ?? 0;
@@ -75,10 +81,6 @@
       window.parent.window.postMessage(
         {
           command: "contextmenu",
-          // event: {
-          //   pageX: e.pageX,
-          //   pageY: e.pageY,
-          // },
         },
         "*"
       );

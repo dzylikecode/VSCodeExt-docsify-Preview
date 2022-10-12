@@ -20,21 +20,26 @@
     <script>
       const vscode = acquireVsCodeApi();
       const iframe = document.getElementById("Server");
-      console.log("Hello, Webview!");
+      const log = (msg) => console.log("webview: " + msg);
+
+      log("Hello!");
 
       // Handle the message inside the webview
       window.addEventListener("message", (event) => {
         const message = event.data; // The JSON data our extension sent
+        log(JSON.stringify(message));
 
         switch (message.command) {
           case "jump":
             loadFrame(message.url);
             break;
           case "contextmenu":
-            console.log("contextmenu");
             vscode.postMessage({
               command: "contextmenu",
             });
+            break;
+          case "loaded":
+            vscode.postMessage(message);
             break;
         }
       });
