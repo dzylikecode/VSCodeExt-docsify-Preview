@@ -8,7 +8,7 @@ const webViewServer = {
     this.panel = vscode.window.createWebviewPanel(
       "docsifyPreviewer", // Webview id
       "docsify Preview", // Webview title
-      vscode.ViewColumn.Two, // open the second column for preview inside editor
+      { viewColumn: vscode.ViewColumn.Two, preserveFocus: true }, // open the second column for preview inside editor
       {
         enableScripts: true,
         retainContextWhenHidden: true,

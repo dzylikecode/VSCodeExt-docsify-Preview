@@ -56,6 +56,10 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
 ## Release Notes
 
+### 0.2.2
+
+fix: An annoying bug that you have to drag the next markdown to the side bar to see the preview.
+
 ### 0.2.1
 
 change the label of menu to "Show Docsify preview to the side"
