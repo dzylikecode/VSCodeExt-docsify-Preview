@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -63,7 +63,7 @@
     "commands": [
       {
         "command": "docsify-preview.sidePreview",
-        "title": "Show side preview",
+        "title": "Show Docsify preview to the side",
         "category": "menubar",
         "icon": {
           "light": "./assets/Preview.svg",

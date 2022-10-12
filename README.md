@@ -22,6 +22,8 @@
 
   ![](assets/feature/reload.gif)
 
+- right-click the preview will open the preview in the default browser
+
 If you are interested in my docsify template, welcome to visit my [docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit and so on.
 
 If you want to paste images in markdown, welcome to use my another plugin:[md-paste-enhanced](https://marketplace.visualstudio.com/items?itemName=dzylikecode.md-paste-enhanced).
@@ -54,9 +56,15 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
 ## Release Notes
 
+### 0.2.1
+
+change the label of menu to "Show Docsify preview to the side"
+
+> Thanks to @paulhibbitts
+
 ### 0.2.0
 
-feature: right click will open the preview in browser
+feature: right-click the preview will open the preview in the default browser
 
 ### 0.1.0
 
