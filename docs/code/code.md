@@ -204,6 +204,8 @@ flowchart LR
 
 > 碰到问题[reload-时-scroll-不起作用](#reload-时-scroll-不起作用)
 
+我认为这个更好, 因为浏览器打开的话, 如果保存了, 也会更新, 而如果用 iframe 传递消息, 就不会更新浏览器里的内容
+
 ## feature
 
 ### open in browser
@@ -233,6 +235,11 @@ flowchart LR
     似乎不错, 但是我没时间去画右键菜单了
 
 简单使用右键即打开网页
+
+### sidebar
+
+- [ ] remembar whether the sidebar is opened
+- [ ] close the webview if the vscode is closed
 
 ## issue
 
