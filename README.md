@@ -99,6 +99,6 @@ I'm a student from China and I sacrificed the entire National Day holiday to wri
 
 |            WeChat Pay            |            Alipay             |
 | :------------------------------: | :---------------------------: |
-| ![](assets/afford/WeChatPay.png) | ![](assets/afford/Alipay.jpg) |
+| ![](assets/afford/WeChatPay.png) | ![](assets/afford/AliPay.jpg) |
 
 **Enjoy!**
