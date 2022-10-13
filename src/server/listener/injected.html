@@ -1,33 +1,39 @@
 <!--injected by docsify preivew-->
 <script>
+  const log = (msg) => {
+    console.log("localhost:");
+    console.log(msg);
+  };
+
+  let scrollPosFirstime = undefined;
   window.onbeforeunload = function (e) {
     localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
+    let sidebarClosed = false;
+    const classes = document.querySelector("body").classList;
+    if (classes.contains("close")) {
+      sidebarClosed = true;
+    }
+    localStorage.setItem("sidebarClosed", sidebarClosed);
   };
-  // window.onload = () => {
-  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
-  //   let curPos = +scrollpos;
-  //   window.scroll(0, curPos);
-  // };
-  // document.addEventListener("DOMContentLoaded", function (event) {
-  //   let scrollpos = localStorage.getItem("scrollpos") ?? 0;
-  //   let curPos = +scrollpos;
-  //   // window.scrollTo(0, curPos);
-  //   setTimeout(function () {
-  //     window.scrollTo(0, curPos);
-  //   }, 50);
-  // });
   const websocket = new WebSocket("ws://" + document.location.host);
   let isConnected = false;
-  // websocket.onopen = () => {
-  //   console.log("connected");
-  //   isConnected = true;
-  // };
+  websocket.onopen = () => {
+    log("connected");
+    isConnected = true;
+  };
   websocket.onmessage = (event) => {
+    log(event.data);
     let message = JSON.parse(event.data);
     switch (message.command) {
-      case "scroll":
-        updateScroll(+message.linePercent);
-        break;
+      // case "scroll":
+      //   window.postMessage(
+      //     {
+      //       command: "scroll",
+      //       linePercent: message.linePercent,
+      //     },
+      //     "*"
+      //   );
+      //   break;
       case "reload":
         reloadWindow();
         break;
@@ -36,7 +42,7 @@
 
   function updateScroll(linePercent) {
     const nextPosition = document.body.scrollHeight * linePercent;
-    window.scroll(0, Math.ceil(nextPosition));
+    window.scroll(0, nextPosition);
   }
   function reloadWindow() {
     document.location.reload();
@@ -46,22 +52,43 @@
   (function () {
     if (window.$docsify) {
       window.$docsify.plugins = [].concat(function (hook, vm) {
+        hook.init(() => {
+          const sidebarClosed = localStorage.getItem("sidebarClosed");
+          if (sidebarClosed == "true") {
+            // see https://github.com/docsifyjs/docsify/issues/1905
+            document.querySelector("body").classList.add("close");
+          } else if (sidebarClosed == "false") {
+            document.querySelector("body").classList.remove("close");
+          }
+        });
+        hook.beforeEach(function (html) {
+          let filePath = decodeURI(vm.route.path);
+          // .md 结尾说明消息来自vscode的请求
+          if (filePath.endsWith(".md") == false) {
+            //将不是vscode的跳转请求发送给vscode
+            if (filePath.endsWith("/")) {
+              filePath += "README";
+            }
+            filePath += ".md";
+            window.parent.window.postMessage(
+              { command: "loaded", url: filePath },
+              "*"
+            );
+          } else {
+            window.parent.window.postMessage(
+              { command: "loaded", url: filePath },
+              "*"
+            );
+          }
+          return html;
+        });
+
         hook.ready(function () {
           // this why I can't scroll window directly
-          let scrollpos = localStorage.getItem("scrollpos") ?? 0;
+          let scrollpos =
+            scrollPosFirstime ?? localStorage.getItem("scrollpos") ?? 0;
           let curPos = +scrollpos;
           window.scroll(0, curPos);
-          // I want to inform vscode that the page is ready
-          // let intervId = setInterval(() => {
-          //   if (isConnected) {
-          //     clearInterval(intervId);
-          //     return;
-          //   }
-          //   let message = JSON.stringify({
-          //     command: "loaded",
-          //   });
-          //   websocket.send(message);
-          // }, 50);
         });
       }, window.$docsify.plugins);
     }
@@ -74,15 +101,49 @@
       // console.log(e);
       window.parent.window.postMessage(
         {
-          command: "contextmenu",
-          // event: {
-          //   pageX: e.pageX,
-          //   pageY: e.pageY,
-          // },
+          command: "popContextMenu",
+          event: {
+            x: e.x,
+            y: e.y,
+          },
+          scrollPos:
+            document.scrollingElement.scrollTop / document.body.scrollHeight,
         },
         "*"
       );
     },
     false
   );
+  window.onclick = function (e) {
+    window.parent.window.postMessage(
+      {
+        command: "hideContextMenu",
+      },
+      "*"
+    );
+  };
 </script>
+<script>
+  window.onscroll = function (event) {
+    window.parent.window.postMessage(
+      {
+        command: "hideContextMenu",
+      },
+      "*"
+    );
+  };
+  window.addEventListener("message", (event) => {
+    const message = event.data; // The JSON data our extension sent
+    log(JSON.stringify(message));
+
+    switch (message.command) {
+      case "jumpFirstTime":
+        scrollPosFirstime = document.body.scrollHeight * message.linePercent;
+        break;
+      case "scroll":
+        updateScroll(message.linePercent);
+        break;
+    }
+  });
+</script>
+<!-- end for docsify preview -->

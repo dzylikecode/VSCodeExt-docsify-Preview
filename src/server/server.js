@@ -14,12 +14,16 @@ let server = {
       });
     }
   },
+  jumpFirstTime(url, linePercent) {
+    webViewServer.jumpFirstTime(url, linePercent);
+    this.url = url;
+  },
   jump(url) {
     webViewServer.jump(url);
     this.url = url;
   },
   scroll(linePercent) {
-    httpServer.scroll(linePercent);
+    webViewServer.scroll(linePercent);
   },
   setTitile(title) {
     webViewServer.setTitile(title);
