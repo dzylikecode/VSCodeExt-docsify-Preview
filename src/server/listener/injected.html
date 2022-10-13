@@ -74,6 +74,11 @@
               { command: "loaded", url: filePath },
               "*"
             );
+          } else {
+            window.parent.window.postMessage(
+              { command: "loaded", url: filePath },
+              "*"
+            );
           }
           return html;
         });

@@ -55,6 +55,36 @@ async function main(context, disposable) {
   server.onMessage((socket, message) => {
     if (message.command == "openInBrowser") {
       vscode.env.openExternal(server.url);
+    } else if (message.command == "goHere") {
+      console.log(message);
+      goHere(message.url, message.linePercent);
+    }
+    return;
+    function goHere(url, linePercent) {
+      let filePath = path.join(config.docsifyRootPath, url);
+      let fileResource = vscode.Uri.file(filePath);
+      let curDocument;
+      vscode.workspace
+        .openTextDocument(fileResource)
+        .then((document) => {
+          let editor = vscode.window.showTextDocument(
+            document,
+            vscode.ViewColumn.One
+          );
+          curDocument = document;
+          return editor;
+        })
+        .then((editor) => {
+          editor.revealRange(
+            new vscode.Range(
+              Math.floor(curDocument.lineCount * linePercent),
+              0,
+              Math.floor(curDocument.lineCount * linePercent),
+              0
+            ),
+            vscode.TextEditorRevealType.AtTop
+          );
+        });
     }
   });
 
@@ -95,8 +125,7 @@ async function handleTextDocumentChange() {
 
 function getLinePercent(textEditor) {
   const linePercent =
-    (textEditor.visibleRanges[0].start.line - 1) /
-    textEditor.document.lineCount;
+    textEditor.visibleRanges[0].start.line / textEditor.document.lineCount;
   return linePercent;
 }
 

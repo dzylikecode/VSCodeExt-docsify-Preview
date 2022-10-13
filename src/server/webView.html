@@ -48,8 +48,8 @@
   <body>
     <div id="contextMenu" class="context-menu" style="display: none">
       <ul>
-        <li onclick="openInBrowser()">Open in browser</li>
         <li onclick="goHere()">Go here</li>
+        <li onclick="openInBrowser()">Open in browser</li>
       </ul>
     </div>
     <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>
@@ -144,7 +144,7 @@
         vscode.postMessage({
           command: "goHere",
           url: currentUrl,
-          scrollPos: curScrollPos,
+          linePercent: curScrollPos,
         });
       }
     </script>
