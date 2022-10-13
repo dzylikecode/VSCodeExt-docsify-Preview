@@ -4,8 +4,16 @@
     console.log("localhost:");
     console.log(msg);
   };
+
+  let scrollPosFirstime = undefined;
   window.onbeforeunload = function (e) {
     localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
+    let sidebarClosed = false;
+    const classes = document.querySelector("body").classList;
+    if (classes.contains("close")) {
+      sidebarClosed = true;
+    }
+    localStorage.setItem("sidebarClosed", sidebarClosed);
   };
   const websocket = new WebSocket("ws://" + document.location.host);
   let isConnected = false;
@@ -44,6 +52,15 @@
   (function () {
     if (window.$docsify) {
       window.$docsify.plugins = [].concat(function (hook, vm) {
+        hook.init(() => {
+          const sidebarClosed = localStorage.getItem("sidebarClosed");
+          if (sidebarClosed == "true") {
+            // see https://github.com/docsifyjs/docsify/issues/1905
+            document.querySelector("body").classList.add("close");
+          } else if (sidebarClosed == "false") {
+            document.querySelector("body").classList.remove("close");
+          }
+        });
         hook.beforeEach(function (html) {
           let filePath = decodeURI(vm.route.path);
           // .md 结尾说明消息来自vscode的请求
@@ -63,7 +80,8 @@
 
         hook.ready(function () {
           // this why I can't scroll window directly
-          let scrollpos = localStorage.getItem("scrollpos") ?? 0;
+          let scrollpos =
+            scrollPosFirstime ?? localStorage.getItem("scrollpos") ?? 0;
           let curPos = +scrollpos;
           window.scroll(0, curPos);
         });
@@ -115,10 +133,7 @@
 
     switch (message.command) {
       case "jumpFirstTime":
-        localStorage.setItem(
-          "scrollpos",
-          document.body.scrollHeight * message.linePercent
-        );
+        scrollPosFirstime = document.body.scrollHeight * message.linePercent;
         break;
       case "scroll":
         updateScroll(message.linePercent);

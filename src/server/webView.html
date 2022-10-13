@@ -74,20 +74,24 @@
           case "jumpFirstTime":
             loadFrame(message.url);
             iframe.onload = () => {
-              iframe.contentWindow.postMessage(
-                {
-                  command: "jumpFirstTime",
-                  linePercent: message.linePercent,
-                },
-                "*"
-              );
+              if (message.linePercent) {
+                // 避免每次reload都是调用下面的函数
+                iframe.contentWindow.postMessage(
+                  {
+                    command: "jumpFirstTime",
+                    linePercent: message.linePercent,
+                  },
+                  "*"
+                );
+                message.linePercent = undefined; // 由于闭包, 需要将其undefined
+              }
             };
             break;
           case "jump":
             loadFrame(message.url);
             break;
           case "popContextMenu":
-            rightClick(message.event);
+            popContextMenu(message.event);
             curScrollPos = message.scrollPos;
             break;
           case "loaded":
@@ -101,7 +105,6 @@
             break;
         }
       });
-
       function loadFrame(url) {
         iframe.src = url;
       }
@@ -117,7 +120,7 @@
         document.getElementById("contextMenu").style.display = "none";
       }
 
-      function rightClick(e) {
+      function popContextMenu(e) {
         log("context");
 
         if (document.getElementById("contextMenu").style.display == "block")

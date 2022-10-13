@@ -64,6 +64,8 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
       If you click the button, the vscode will open the corresponding markdown and scroll to the same position.
 
+- [x] fix: the state of whether sidebar is closed will be reset if you reload the window
+
 ### 0.2.1
 
 change the label of menu to "Show Docsify preview to the side"

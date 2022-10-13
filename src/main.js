@@ -50,7 +50,7 @@ async function main(context, disposable) {
 
   server.jumpFirstTime(
     parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName),
-    getLinePercent()
+    getLinePercent(vscode.window.activeTextEditor)
   );
   server.onMessage((socket, message) => {
     if (message.command == "openInBrowser") {
@@ -67,7 +67,7 @@ async function main(context, disposable) {
   vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
     if (!isClosed) {
       if (textEditor.document.languageId === "markdown") {
-        server.scroll(getLinePercent());
+        server.scroll(getLinePercent(textEditor));
       }
     }
   });
@@ -93,8 +93,7 @@ async function handleTextDocumentChange() {
   }
 }
 
-function getLinePercent() {
-  const textEditor = vscode.window.activeTextEditor;
+function getLinePercent(textEditor) {
   const linePercent =
     (textEditor.visibleRanges[0].start.line - 1) /
     textEditor.document.lineCount;
