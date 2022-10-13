@@ -71,19 +71,20 @@
         log(JSON.stringify(message));
 
         switch (message.command) {
-          case "jump":
+          case "jumpFirstTime":
             loadFrame(message.url);
             iframe.onload = () => {
               iframe.contentWindow.postMessage(
                 {
-                  command: "hello",
+                  command: "jumpFirstTime",
+                  linePercent: message.linePercent,
                 },
                 "*"
               );
-              // window.postMessage({
-              //   command: "scroll",
-              // });
             };
+            break;
+          case "jump":
+            loadFrame(message.url);
             break;
           case "popContextMenu":
             rightClick(message.event);

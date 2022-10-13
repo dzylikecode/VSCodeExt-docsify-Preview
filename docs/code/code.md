@@ -160,7 +160,7 @@ flowchart LR
 
 ### model-6
 
-- :heavy_check_mark:
+- :heavy_check_mark: -> 0.0.1 - 0.2.2
 
 inspired by [live-server](https://github.com/ritwickdey/vscode-live-server)
 

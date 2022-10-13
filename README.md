@@ -56,6 +56,14 @@ The scroll will be put at the wrong position when openning the `docsify Preivew`
 
 ## Release Notes
 
+### 1.0.0
+
+- [ ] fix: the scroll position will be put at the wrong position when openning the `docsify Preivew` the first time
+- [ ] change: use the context menu to open the preview in browser instead of right-click
+- [ ] add: the button "go here" in the context menu
+
+      If you click the button, the vscode will open the corresponding markdown and scroll to the same position.
+
 ### 0.2.1
 
 change the label of menu to "Show Docsify preview to the side"

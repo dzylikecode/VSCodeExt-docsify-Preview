@@ -114,6 +114,12 @@
     log(JSON.stringify(message));
 
     switch (message.command) {
+      case "jumpFirstTime":
+        localStorage.setItem(
+          "scrollpos",
+          document.body.scrollHeight * message.linePercent
+        );
+        break;
       case "scroll":
         updateScroll(message.linePercent);
         break;

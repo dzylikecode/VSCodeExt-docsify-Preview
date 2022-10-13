@@ -48,21 +48,11 @@ async function main(context, disposable) {
     }
   }
 
-  server.jump(
-    // not work becase docsify is not ready
-    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
+  server.jumpFirstTime(
+    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName),
+    getLinePercent()
   );
   server.onMessage((socket, message) => {
-    // if (message.command === "requsetScroll") {
-    //   let textEditor = vscode.window.activeTextEditor;
-    //   let sendMessage = JSON.stringify({
-    //     command: "loaded",
-    //     linePercent:
-    //       (textEditor.visibleRanges[0].start.line - 1) /
-    //       textEditor.document.lineCount,
-    //   });
-    //   socket.send(sendMessage);
-    // }
     if (message.command == "openInBrowser") {
       vscode.env.openExternal(server.url);
     }
@@ -77,7 +67,7 @@ async function main(context, disposable) {
   vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
     if (!isClosed) {
       if (textEditor.document.languageId === "markdown") {
-        scrollServer(textEditor);
+        server.scroll(getLinePercent());
       }
     }
   });
@@ -99,14 +89,16 @@ async function handleTextDocumentChange() {
     server.setTitile(`[Preview] ${relativePath}`);
     const url = parseUrl(config.rootUrl, filePath);
     server.jump(url);
-    scrollServer(vscode.window.activeTextEditor);
+    server.scroll(getLinePercent());
   }
 }
 
-function scrollServer(textEditor) {
-  server.scroll(
-    (textEditor.visibleRanges[0].start.line - 1) / textEditor.document.lineCount
-  );
+function getLinePercent() {
+  const textEditor = vscode.window.activeTextEditor;
+  const linePercent =
+    (textEditor.visibleRanges[0].start.line - 1) /
+    textEditor.document.lineCount;
+  return linePercent;
 }
 
 function parseUrl(rootUrl, filePath = "") {
