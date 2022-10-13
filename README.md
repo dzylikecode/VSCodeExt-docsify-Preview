@@ -22,7 +22,10 @@
 
   ![](assets/feature/reload.gif)
 
-- right-click the preview will open the preview in the default browser
+- context menu
+
+  - Open in browser
+  - go here
 
 If you are interested in my docsify template, welcome to visit my [docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit and so on.
 
@@ -34,7 +37,7 @@ If you want to paste images in markdown, welcome to use my another plugin:[md-pa
 
 - `docsifyPreview.port`: set the port of the server
 
-  - Default value is `5500`
+  - Default value is `10812`
 
 - `docsifyPreview.indexFile`: Set Custom index file of Live Server.
 
@@ -44,19 +47,27 @@ If you want to paste images in markdown, welcome to use my another plugin:[md-pa
 
   - Default value is `/docs/index.html`
 
-- `docsifyPreview.rightClickOpenInBrowser.enable`: right click will open the preview in browser if enable
-
-  - Default value is `true`
-
 ## Known Issues
 
-The scroll will be put at the wrong position when openning the `docsify Preivew` the first time. So you must scroll the markdown slightly to make the scroll at the right position. Hope this issue will be fixed in the future, and you are tolerant to this issue.
-
-> I can't stand it. 😭 😭 😭
+I have fixed all the issues I met. If you find any issues, please report it to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
 
+### 1.0.0
+
+🎉 🎉 🎉
+
+- [x] fix: the scroll position will be put at the wrong position when openning the `docsify Preivew` the first time
+- [x] change: use the context menu to open the preview in browser instead of right-click
+- [x] add: the button "go here" in the context menu
+
+      If you click the button, the vscode will open the corresponding markdown and scroll to the same position.
+
+- [x] fix: the state of whether sidebar is closed will be reset if you reload the window
+
 ### 0.2.2
+
+@paulhibbitts
 
 fix: An annoying bug that you have to drag the next markdown to the side bar to see the preview.
 
@@ -81,5 +92,13 @@ congratulations!
 - [x] scroll sync
 - [x] reload automatically when saving markdown
 - [x] jump to the corresponding link automatically when switching the markdown
+
+## buy me a coffee
+
+I'm a student from China and I sacrificed the entire National Day holiday to write this plugin(Not only that, I also overdrawn five days of study😰). If you like this plugin, please give me a star. If you want to buy me a coffee, scan the QR code below. Thanks! 😝 😝 😝
+
+|            WeChat Pay            |            Alipay             |
+| :------------------------------: | :---------------------------: |
+| ![](assets/afford/WeChatPay.png) | ![](assets/afford/Alipay.jpg) |
 
 **Enjoy!**

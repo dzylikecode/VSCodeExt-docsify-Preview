@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -42,7 +42,7 @@
       "properties": {
         "docsifyPreview.port": {
           "type": "number",
-          "default": 5500,
+          "default": 10812,
           "minimum": 0,
           "maximum": 65535,
           "description": "Set Custom Port Number of docsify Preview"
@@ -52,11 +52,6 @@
           "default": "/docs/index.html",
           "pattern": "/|/[^\\/]",
           "description": "Set Custom index file of Live Server. \nTo change index file, use '/' and relative path from workspace. \nExample: /index.html"
-        },
-        "docsifyPreview.rightClickOpenInBrowser.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "right click will open the preview in browser if enable"
         }
       }
     },

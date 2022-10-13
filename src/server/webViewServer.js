@@ -1,7 +1,6 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const config = require("../config.js");
-const path = require("path");
 // 最好能使用单例模式就好了
 const webViewServer = {
   create() {
@@ -31,8 +30,18 @@ const webViewServer = {
       callback(null, message);
     });
   },
+  jumpFirstTime(url, linePercent) {
+    this.postMessage({
+      command: "jumpFirstTime",
+      url: url,
+      linePercent: linePercent,
+    });
+  },
   jump(url) {
     this.postMessage({ command: "jump", url: url });
+  },
+  scroll(linePercent) {
+    this.postMessage({ command: "scroll", linePercent: linePercent });
   },
   setTitile(title) {
     if (this.panel) {

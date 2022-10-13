@@ -48,25 +48,43 @@ async function main(context, disposable) {
     }
   }
 
-  server.jump(
-    // not work becase docsify is not ready
-    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName)
+  server.jumpFirstTime(
+    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName),
+    getLinePercent(vscode.window.activeTextEditor)
   );
   server.onMessage((socket, message) => {
-    // if (message.command === "requsetScroll") {
-    //   let textEditor = vscode.window.activeTextEditor;
-    //   let sendMessage = JSON.stringify({
-    //     command: "loaded",
-    //     linePercent:
-    //       (textEditor.visibleRanges[0].start.line - 1) /
-    //       textEditor.document.lineCount,
-    //   });
-    //   socket.send(sendMessage);
-    // }
-    if (message.command == "contextmenu") {
-      if (config.rightClickOpenInBrowser) {
-        vscode.env.openExternal(server.url);
-      }
+    if (message.command == "openInBrowser") {
+      vscode.env.openExternal(server.url);
+    } else if (message.command == "goHere") {
+      console.log(message);
+      goHere(message.url, message.linePercent);
+    }
+    return;
+    function goHere(url, linePercent) {
+      let filePath = path.join(config.docsifyRootPath, url);
+      let fileResource = vscode.Uri.file(filePath);
+      let curDocument;
+      vscode.workspace
+        .openTextDocument(fileResource)
+        .then((document) => {
+          let editor = vscode.window.showTextDocument(
+            document,
+            vscode.ViewColumn.One
+          );
+          curDocument = document;
+          return editor;
+        })
+        .then((editor) => {
+          editor.revealRange(
+            new vscode.Range(
+              Math.floor(curDocument.lineCount * linePercent),
+              0,
+              Math.floor(curDocument.lineCount * linePercent),
+              0
+            ),
+            vscode.TextEditorRevealType.AtTop
+          );
+        });
     }
   });
 
@@ -79,7 +97,7 @@ async function main(context, disposable) {
   vscode.window.onDidChangeTextEditorVisibleRanges(({ textEditor }) => {
     if (!isClosed) {
       if (textEditor.document.languageId === "markdown") {
-        scrollServer(textEditor);
+        server.scroll(getLinePercent(textEditor));
       }
     }
   });
@@ -101,14 +119,14 @@ async function handleTextDocumentChange() {
     server.setTitile(`[Preview] ${relativePath}`);
     const url = parseUrl(config.rootUrl, filePath);
     server.jump(url);
-    scrollServer(vscode.window.activeTextEditor);
+    server.scroll(getLinePercent(vscode.window.activeTextEditor));
   }
 }
 
-function scrollServer(textEditor) {
-  server.scroll(
-    (textEditor.visibleRanges[0].start.line - 1) / textEditor.document.lineCount
-  );
+function getLinePercent(textEditor) {
+  const linePercent =
+    textEditor.visibleRanges[0].start.line / textEditor.document.lineCount;
+  return linePercent;
 }
 
 function parseUrl(rootUrl, filePath = "") {
