@@ -19,7 +19,7 @@ let server = {
     this.url = url;
   },
   scroll(linePercent) {
-    httpServer.scroll(linePercent);
+    webViewServer.scroll(linePercent);
   },
   setTitile(title) {
     webViewServer.setTitile(title);

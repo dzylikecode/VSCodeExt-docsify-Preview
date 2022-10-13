@@ -34,6 +34,9 @@ const webViewServer = {
   jump(url) {
     this.postMessage({ command: "jump", url: url });
   },
+  scroll(linePercent) {
+    this.postMessage({ command: "scroll", linePercent: linePercent });
+  },
   setTitile(title) {
     if (this.panel) {
       this.panel.title = title;

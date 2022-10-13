@@ -1,6 +1,9 @@
 <!--injected by docsify preivew-->
 <script>
-  const log = (msg) => console.log("localhost: " + msg);
+  const log = (msg) => {
+    console.log("localhost:");
+    console.log(msg);
+  };
   window.onbeforeunload = function (e) {
     localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
   };
@@ -14,9 +17,15 @@
     log(event.data);
     let message = JSON.parse(event.data);
     switch (message.command) {
-      case "scroll":
-        updateScroll(+message.linePercent);
-        break;
+      // case "scroll":
+      //   window.postMessage(
+      //     {
+      //       command: "scroll",
+      //       linePercent: message.linePercent,
+      //     },
+      //     "*"
+      //   );
+      //   break;
       case "reload":
         reloadWindow();
         break;
@@ -57,17 +66,6 @@
           let scrollpos = localStorage.getItem("scrollpos") ?? 0;
           let curPos = +scrollpos;
           window.scroll(0, curPos);
-          // I want to inform vscode that the page is ready
-          // let intervId = setInterval(() => {
-          //   if (isConnected) {
-          //     clearInterval(intervId);
-          //     return;
-          //   }
-          //   let message = JSON.stringify({
-          //     command: "loaded",
-          //   });
-          //   websocket.send(message);
-          // }, 50);
         });
       }, window.$docsify.plugins);
     }
@@ -80,11 +78,13 @@
       // console.log(e);
       window.parent.window.postMessage(
         {
-          command: "contextmenu",
+          command: "popContextMenu",
           event: {
             x: e.x,
             y: e.y,
           },
+          scrollPos:
+            document.scrollingElement.scrollTop / document.body.scrollHeight,
         },
         "*"
       );
@@ -92,10 +92,9 @@
     false
   );
   window.onclick = function (e) {
-    console.log(e);
     window.parent.window.postMessage(
       {
-        command: "click",
+        command: "hideContextMenu",
       },
       "*"
     );
@@ -105,10 +104,20 @@
   window.onscroll = function (event) {
     window.parent.window.postMessage(
       {
-        command: "scroll",
+        command: "hideContextMenu",
       },
       "*"
     );
   };
+  window.addEventListener("message", (event) => {
+    const message = event.data; // The JSON data our extension sent
+    log(JSON.stringify(message));
+
+    switch (message.command) {
+      case "scroll":
+        updateScroll(message.linePercent);
+        break;
+    }
+  });
 </script>
 <!-- end for docsify preview -->

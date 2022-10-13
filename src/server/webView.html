@@ -56,7 +56,12 @@
     <script>
       const vscode = acquireVsCodeApi();
       const iframe = document.getElementById("Server");
-      const log = (msg) => console.log("webview: " + msg);
+      const log = (msg) => {
+        console.log("webview: ");
+        console.log(msg);
+      };
+      let currentUrl;
+      let curScrollPos = 0;
 
       log("Hello!");
 
@@ -68,26 +73,46 @@
         switch (message.command) {
           case "jump":
             loadFrame(message.url);
+            iframe.onload = () => {
+              iframe.contentWindow.postMessage(
+                {
+                  command: "hello",
+                },
+                "*"
+              );
+              // window.postMessage({
+              //   command: "scroll",
+              // });
+            };
             break;
-          case "contextmenu":
+          case "popContextMenu":
             rightClick(message.event);
+            curScrollPos = message.scrollPos;
             break;
           case "loaded":
-            vscode.postMessage(message);
-            break;
-          case "click":
-            hideMenu();
+            currentUrl = message.url;
             break;
           case "scroll":
-            hideMenu();
+            updateScroll(message.linePercent);
+            break;
+          case "hideContextMenu":
+            hideContextMenu();
             break;
         }
       });
+
       function loadFrame(url) {
         iframe.src = url;
       }
 
-      function hideMenu() {
+      function updateScroll(linePercent) {
+        iframe.contentWindow.postMessage(
+          { command: "scroll", linePercent: linePercent },
+          "*"
+        );
+      }
+
+      function hideContextMenu() {
         document.getElementById("contextMenu").style.display = "none";
       }
 
@@ -95,9 +120,9 @@
         log("context");
 
         if (document.getElementById("contextMenu").style.display == "block")
-          hideMenu();
+          hideContextMenu();
         else {
-          var menu = document.getElementById("contextMenu");
+          let menu = document.getElementById("contextMenu");
 
           menu.style.display = "block";
           menu.style.left = e.x + "px";
@@ -106,8 +131,17 @@
       }
       function openInBrowser() {
         log("open in browser");
-        hideMenu();
+        hideContextMenu();
         vscode.postMessage({ command: "openInBrowser" });
+      }
+      function goHere() {
+        log("go here");
+        hideContextMenu();
+        vscode.postMessage({
+          command: "goHere",
+          url: currentUrl,
+          scrollPos: curScrollPos,
+        });
       }
     </script>
   </body>

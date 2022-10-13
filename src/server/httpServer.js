@@ -22,7 +22,7 @@ let httpServer = {
       if (fs.existsSync(docsifyIndexHtmlPath) == false) {
         reject("IndexNotFound");
       }
-      return fs.readFileSync(docsifyIndexHtmlPath, "utf8"); // TODO: check file
+      return fs.readFileSync(docsifyIndexHtmlPath, "utf8");
     }
     function createServer(html) {
       let expressApp = createApp(html);
