@@ -96,6 +96,7 @@
             break;
           case "loaded":
             currentUrl = message.url;
+            vscode.postMessage({ command: "loaded", url: currentUrl });
             break;
           case "scroll":
             updateScroll(message.linePercent);

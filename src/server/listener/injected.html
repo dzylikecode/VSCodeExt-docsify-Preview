@@ -1,94 +1,115 @@
 <!--injected by docsify preivew-->
 <script>
+  const websocket = new WebSocket("ws://" + document.location.host);
   const log = (msg) => {
     console.log("localhost:");
     console.log(msg);
   };
-
   let scrollPosFirstime = undefined;
   window.onbeforeunload = function (e) {
-    localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
-    let sidebarClosed = false;
-    const classes = document.querySelector("body").classList;
-    if (classes.contains("close")) {
-      sidebarClosed = true;
+    storeScrollPos();
+    storeSidebarState();
+    return;
+    function storeScrollPos() {
+      localStorage.setItem("scrollpos", document.scrollingElement.scrollTop);
     }
-    localStorage.setItem("sidebarClosed", sidebarClosed);
+    function storeSidebarState() {
+      let sidebarClosed = false;
+      const classes = document.querySelector("body").classList;
+      if (classes.contains("close")) {
+        sidebarClosed = true;
+      }
+      localStorage.setItem("sidebarClosed", sidebarClosed);
+    }
   };
-  const websocket = new WebSocket("ws://" + document.location.host);
-  let isConnected = false;
+
   websocket.onopen = () => {
     log("connected");
-    isConnected = true;
   };
   websocket.onmessage = (event) => {
     log(event.data);
     let message = JSON.parse(event.data);
     switch (message.command) {
-      // case "scroll":
-      //   window.postMessage(
-      //     {
-      //       command: "scroll",
-      //       linePercent: message.linePercent,
-      //     },
-      //     "*"
-      //   );
-      //   break;
       case "reload":
         reloadWindow();
         break;
     }
+    return;
+    function reloadWindow() {
+      document.location.reload();
+    }
   };
+  window.addEventListener("message", (event) => {
+    const message = event.data; // The JSON data our extension sent
 
-  function updateScroll(linePercent) {
-    const nextPosition = document.body.scrollHeight * linePercent;
-    window.scroll(0, nextPosition);
-  }
-  function reloadWindow() {
-    document.location.reload();
-  }
+    switch (message.command) {
+      case "jumpFirstTime":
+        // 此时 document.body.scrollHeight 并不正确
+        scrollPosFirstime = message.linePercent;
+        break;
+      case "scroll":
+        updateScroll(message.linePercent);
+        break;
+    }
+    return;
+    function updateScroll(linePercent) {
+      const nextPosition = document.body.scrollHeight * linePercent;
+      window.scroll(0, nextPosition);
+    }
+  });
 </script>
 <script>
   (function () {
     if (window.$docsify) {
       window.$docsify.plugins = [].concat(function (hook, vm) {
         hook.init(() => {
-          const sidebarClosed = localStorage.getItem("sidebarClosed");
-          if (sidebarClosed == "true") {
-            // see https://github.com/docsifyjs/docsify/issues/1905
-            document.querySelector("body").classList.add("close");
-          } else if (sidebarClosed == "false") {
-            document.querySelector("body").classList.remove("close");
-          }
-        });
-        hook.beforeEach(function (html) {
-          let filePath = decodeURI(vm.route.path);
-          // .md 结尾说明消息来自vscode的请求
-          if (filePath.endsWith(".md") == false) {
-            //将不是vscode的跳转请求发送给vscode
-            if (filePath.endsWith("/")) {
-              filePath += "README";
+          keepScrollState();
+          return;
+          function keepScrollState() {
+            const sidebarClosed = localStorage.getItem("sidebarClosed");
+            if (sidebarClosed == "true") {
+              // see https://github.com/docsifyjs/docsify/issues/1905
+              document.querySelector("body").classList.add("close");
+            } else if (sidebarClosed == "false") {
+              document.querySelector("body").classList.remove("close");
             }
-            filePath += ".md";
-            window.parent.window.postMessage(
-              { command: "loaded", url: filePath },
-              "*"
-            );
-          } else {
-            window.parent.window.postMessage(
-              { command: "loaded", url: filePath },
-              "*"
-            );
           }
-          return html;
         });
-
-        hook.ready(function () {
+        hook.beforeEach((html) => {
+          postCurrentURL(vm.route.path);
+          return html;
+          function postCurrentURL(curURL) {
+            let filePath = decodeURI(curURL);
+            // .md 结尾说明消息来自vscode的请求
+            if (filePath.endsWith(".md") == false) {
+              //将不是vscode的跳转请求发送给vscode
+              if (filePath.endsWith("/")) {
+                filePath += "README";
+              }
+              filePath += ".md";
+              window.parent.window.postMessage(
+                { command: "loaded", url: filePath },
+                "*"
+              );
+            } else {
+              window.parent.window.postMessage(
+                { command: "loaded", url: filePath },
+                "*"
+              );
+            }
+          }
+        });
+        hook.ready(() => {
           // this why I can't scroll window directly
-          let scrollpos =
-            scrollPosFirstime ?? localStorage.getItem("scrollpos") ?? 0;
-          let curPos = +scrollpos;
-          window.scroll(0, curPos);
+          restoreScrollState();
+          return;
+          function restoreScrollState() {
+            const scrollpos = scrollPosFirstime
+              ? document.body.scrollHeight * scrollPosFirstime
+              : localStorage.getItem("scrollpos") ?? 0;
+            const curPos = +scrollpos;
+            window.scroll(0, curPos);
+          }
         });
       }, window.$docsify.plugins);
     }
@@ -98,7 +119,6 @@
   document.addEventListener(
     "contextmenu",
     function (e) {
-      // console.log(e);
       window.parent.window.postMessage(
         {
           command: "popContextMenu",
@@ -122,8 +142,6 @@
       "*"
     );
   };
-</script>
-<script>
   window.onscroll = function (event) {
     window.parent.window.postMessage(
       {
@@ -132,18 +150,5 @@
       "*"
     );
   };
-  window.addEventListener("message", (event) => {
-    const message = event.data; // The JSON data our extension sent
-    log(JSON.stringify(message));
-
-    switch (message.command) {
-      case "jumpFirstTime":
-        scrollPosFirstime = document.body.scrollHeight * message.linePercent;
-        break;
-      case "scroll":
-        updateScroll(message.linePercent);
-        break;
-    }
-  });
 </script>
 <!-- end for docsify preview -->

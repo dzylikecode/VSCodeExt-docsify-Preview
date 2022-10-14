@@ -25,6 +25,7 @@
 - context menu
 
   - Open in browser
+
   - go here
 
 If you are interested in my docsify template, welcome to visit my [docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit and so on.
@@ -52,6 +53,18 @@ If you want to paste images in markdown, welcome to use my another plugin:[md-pa
 I have fixed all the issues I met. If you find any issues, please report it to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
+
+### 1.1.0
+
+- fix:
+
+  - open in browser
+
+    it will open the wrong link if you change the page in the preview
+
+  - the title doesn't respond when you change the page in the preview
+
+- refactor code
 
 ### 1.0.0
 
@@ -97,8 +110,8 @@ congratulations!
 
 I'm a student from China and I sacrificed the entire National Day holiday to write this plugin(Not only that, I also overdrawn five days of study😰). If you like this plugin, please give me a star. If you want to buy me a coffee, scan the QR code below. Thanks! 😝 😝 😝
 
-|            WeChat Pay            |            Alipay             |
-| :------------------------------: | :---------------------------: |
-| ![](assets/afford/WeChatPay.png) | ![](assets/afford/AliPay.jpg) |
+|                           PayPal                           |            WeChat Pay            |            Alipay             |
+| :--------------------------------------------------------: | :------------------------------: | :---------------------------: |
+| [dzylikecode](https://www.paypal.com/paypalme/dzylikecode) | ![](assets/afford/WeChatPay.png) | ![](assets/afford/AliPay.jpg) |
 
 **Enjoy!**

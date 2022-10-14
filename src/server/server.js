@@ -1,6 +1,6 @@
 const httpServer = require("./httpServer.js");
 const webViewServer = require("./webViewServer.js");
-
+const config = require("../config.js");
 let server = {
   async create(host, port) {
     let res = await createHttpServer(host, port);
@@ -16,11 +16,9 @@ let server = {
   },
   jumpFirstTime(url, linePercent) {
     webViewServer.jumpFirstTime(url, linePercent);
-    this.url = url;
   },
   jump(url) {
     webViewServer.jump(url);
-    this.url = url;
   },
   scroll(linePercent) {
     webViewServer.scroll(linePercent);
@@ -46,6 +44,10 @@ let server = {
   },
   close() {
     webViewServer.close();
+  },
+  parseUrl(url) {
+    const rootUrl = new URL("#", config.rootUrl).href;
+    return rootUrl + url;
   },
 };
 

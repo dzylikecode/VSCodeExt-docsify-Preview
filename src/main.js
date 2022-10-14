@@ -49,7 +49,7 @@ async function main(context, disposable) {
   }
 
   server.jumpFirstTime(
-    parseUrl(config.rootUrl, vscode.window.activeTextEditor.document.fileName),
+    parseUrl(vscode.window.activeTextEditor.document.fileName),
     getLinePercent(vscode.window.activeTextEditor)
   );
   server.onMessage((socket, message) => {
@@ -58,6 +58,9 @@ async function main(context, disposable) {
     } else if (message.command == "goHere") {
       console.log(message);
       goHere(message.url, message.linePercent);
+    } else if (message.command == "loaded") {
+      server.url = server.parseUrl(message.url);
+      server.setTitile(`[Preview] ${message.url}`);
     }
     return;
     function goHere(url, linePercent) {
@@ -112,12 +115,7 @@ async function handleTextDocumentChange() {
   }
   if (vscode.window.activeTextEditor && checkDocumentIsMarkdown()) {
     const filePath = vscode.window.activeTextEditor.document.fileName;
-    const workspacePath = config.workspacePath;
-    const relativePath = path
-      .relative(workspacePath, filePath)
-      .replace(/\\/g, "/");
-    server.setTitile(`[Preview] ${relativePath}`);
-    const url = parseUrl(config.rootUrl, filePath);
+    const url = parseUrl(filePath);
     server.jump(url);
     server.scroll(getLinePercent(vscode.window.activeTextEditor));
   }
@@ -129,12 +127,11 @@ function getLinePercent(textEditor) {
   return linePercent;
 }
 
-function parseUrl(rootUrl, filePath = "") {
-  rootUrl = new URL("#/", rootUrl).href;
+function parseUrl(filePath) {
   let urlRelative = path
     .relative(config.docsifyRootPath, filePath)
     .replace(/\\/g, "/");
-  return rootUrl + urlRelative;
+  return server.parseUrl("/" + urlRelative);
 }
 
 function getDocumentType() {
