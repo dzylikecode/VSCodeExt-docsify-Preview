@@ -1,5 +1,6 @@
 # docsify Preview
 
+- market: https://marketplace.visualstudio.com/items?itemName=dzylikecode.docsify-preview
 - online docs: https://dzylikecode.github.io/VSCodeExt-docsify-Preview/#/
 
 [docsify](https://docsify.js.org/#/) is a magical documentation site generator. What the plugin does is to help you see the preview of your markdown file when writing it so that you can get a better feedback. What you see is what you get.
