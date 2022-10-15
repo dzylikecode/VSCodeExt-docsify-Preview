@@ -111,7 +111,7 @@ congratulations!
 - [x] reload automatically when saving markdown
 - [x] jump to the corresponding link automatically when switching the markdown
 
-## buy me a coffee
+## buy me a coffee :coffee:
 
 I'm a student from China and I sacrificed the entire National Day holiday to write this plugin(Not only that, I also overdrawn five days of study😰). If you like this plugin, please give me a star. If you want to buy me a coffee, scan the QR code below. Thanks! 😝 😝 😝
 
@@ -124,5 +124,3 @@ I'm a student from China and I sacrificed the entire National Day holiday to wri
 Thank you very much!!!
 
 @paulhibbitts
-
-**Enjoy!**
