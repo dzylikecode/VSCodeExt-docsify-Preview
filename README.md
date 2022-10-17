@@ -1,13 +1,13 @@
-# docsify Preview
+# Docsify Preview
 
 - market: https://marketplace.visualstudio.com/items?itemName=dzylikecode.docsify-preview
 - online docs: https://dzylikecode.github.io/VSCodeExt-docsify-Preview/#/
 
-[docsify](https://docsify.js.org/#/) is a magical documentation site generator. What the plugin does is to help you see the preview of your markdown file when writing it so that you can get a better feedback. What you see is what you get.
+[Docsify](https://docsify.js.org/#/) is a magical documentation site generator. What the plugin does is help you see the preview of your markdown file when writing it so that you can get better feedback. What you see is what you get.
 
 ## Features
 
-- preview docsify in the side bar
+- preview Docsify in the sidebar
 
   ![](assets/feature/preview.gif)
 
@@ -15,11 +15,11 @@
 
   ![](assets/feature/scroll-sync.gif)
 
-- auto jump to the corresponding position when open a markdown file
+- auto jump to the corresponding position when opening a markdown file
 
   ![](assets/feature/jump.gif)
 
-- auto reload when markdown file saved
+- auto-reload when the markdown file saved
 
   ![](assets/feature/reload.gif)
 
@@ -31,29 +31,33 @@
 
     ![](assets/feature/go-here.gif)
 
-If you are interested in my docsify template, welcome to visit my [docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit and so on.
+If you are interested in my Docsify template, welcome to visit my [Docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit, and so on.
 
-If you want to paste images in markdown, welcome to use my another plugin:[md-paste-enhanced](https://marketplace.visualstudio.com/items?itemName=dzylikecode.md-paste-enhanced).
+If you want to paste images in markdown, welcome to use my other plugin:[md-paste-enhanced](https://marketplace.visualstudio.com/items?itemName=dzylikecode.md-paste-enhanced).
 
 > If you like this plugin, please give me a star. Thanks!
 
 ## Extension Settings
 
-- `docsifyPreview.port`: set the port of the server
+- `docsifyPreview.port`
 
-  - Default value is `10812`
+  Set the port of the server
 
-- `docsifyPreview.indexFile`: Set Custom index file of Live Server.
+  - the default value is `10812`
 
-  To change index file, use '/' and relative path from workspace.
+- `docsifyPreview.indexFile`
+
+  Set the path of your custom `index.html`
+
+  To change the path, use `/` refer to the relative path from the workspace.
 
   - Example: `/index.html`
 
-  - Default value is `/docs/index.html`
+  - the default value is `/docs/index.html`
 
 ## Known Issues
 
-I have fixed all the issues I met. If you find any issues, please report it to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
+I have fixed all the issues I met. If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 The scroll will be in the wrong position when you save the markdown file if the current markdown file can't be found in the sidebar. I find the reason is that Docsify won't execute the function `hook.ready` if the Markdown file is not in the sidebar. So you'd better add the markdown file to the sidebar first before writing the Markdown file with joy.
 
@@ -75,23 +79,23 @@ The scroll will be in the wrong position when you save the markdown file if the 
 
 🎉 🎉 🎉
 
-- [x] fix: the scroll position will be put at the wrong position when openning the `docsify Preivew` the first time
-- [x] change: use the context menu to open the preview in browser instead of right-click
+- [x] fix: the scroll position will be put at the wrong position when opening the `Docsify Preview` the first time
+- [x] change: use the context menu to open the preview in a browser instead of right-clicking
 - [x] add: the button "go here" in the context menu
 
-  If you click the button, the vscode will open the corresponding markdown and scroll to the same position.
+  If you click the button, the VSCode will open the corresponding markdown and scroll to the same position.
 
-- [x] fix: the state of whether sidebar is closed will be reset if you reload the window
+- [x] fix: the state of whether the sidebar is closed will be reset if you reload the window
 
 ### 0.2.2
 
 @paulhibbitts
 
-fix: An annoying bug that you have to drag the next markdown to the side bar to see the preview.
+fix: An annoying bug is that you have to drag the next markdown to the sidebar to see the preview.
 
 ### 0.2.1
 
-change the label of menu to "Show Docsify preview to the side"
+change the label of the menu to "Show Docsify preview to the side"
 
 > Thanks to @paulhibbitts
 
@@ -101,7 +105,7 @@ feature: right-click the preview will open the preview in the default browser
 
 ### 0.1.0
 
-feature: add input box if configuration is not correct
+feature: add input box if the configuration is not correct
 
 ### 0.0.1
 
@@ -113,7 +117,7 @@ congratulations!
 
 ## buy me a coffee :coffee:
 
-I'm a student from China and I sacrificed the entire National Day holiday to write this plugin(Not only that, I also overdrawn five days of study😰). If you like this plugin, please give me a star. If you want to buy me a coffee, scan the QR code below. Thanks! 😝 😝 😝
+I'm a student from China and I sacrificed the entire National Day holiday to write this plugin(Not only that, but I also overdrawn five days of study😰). If you like this plugin, please give me a star. If you want to buy me a coffee, scan the QR code below. Thanks! 😝 😝 😝
 
 |                           PayPal                           |            WeChat Pay            |            Alipay             |
 | :--------------------------------------------------------: | :------------------------------: | :---------------------------: |
