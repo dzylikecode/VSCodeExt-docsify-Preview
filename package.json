@@ -64,6 +64,16 @@
           "light": "./assets/Preview.svg",
           "dark": "./assets/Preview_inverse.svg"
         }
+      },
+      {
+        "command": "docsify-preview.openInBrowser",
+        "title": "Yarn 🧶",
+        "category": "Cat Coding"
+      },
+      {
+        "command": "docsify-preview.goHere",
+        "title": "Insert 🦁",
+        "category": "Cat Coding"
       }
     ],
     "menus": {
@@ -72,6 +82,16 @@
           "command": "docsify-preview.sidePreview",
           "when": "editorLangId == markdown",
           "group": "navigation"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "docsify-preview.openInBrowser",
+          "when": "webviewId == 'docsifyPreviewer'"
+        },
+        {
+          "command": "docsify-preview.goHere",
+          "when": "webviewId == 'docsifyPreviewer'"
         }
       ]
     }

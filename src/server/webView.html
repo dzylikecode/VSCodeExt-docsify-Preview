@@ -4,54 +4,8 @@
     <meta charset="UTF-8" />
     <title>Simple HTTP Server</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body,
-      html,
-      iframe {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-
-    <style type="text/css">
-      .context-menu {
-        position: absolute;
-        text-align: center;
-        background: lightgray;
-        border: 1px solid black;
-      }
-
-      .context-menu ul {
-        padding: 0px;
-        margin: 0px;
-        min-width: 150px;
-        list-style: none;
-      }
-
-      .context-menu ul li {
-        padding-bottom: 7px;
-        padding-top: 7px;
-        border-bottom: 1px solid white;
-        cursor: pointer;
-        text-decoration: none;
-        color: white;
-        background-color: black;
-      }
-
-      .context-menu ul li:hover {
-        background: hsl(100, 50%, 20%);
-      }
-    </style>
   </head>
   <body>
-    <div id="contextMenu" class="context-menu" style="display: none">
-      <ul>
-        <li onclick="goHere()">Go here</li>
-        <li onclick="openInBrowser()">Open in browser</li>
-      </ul>
-    </div>
     <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>
     <script>
       const vscode = acquireVsCodeApi();
@@ -91,7 +45,9 @@
             loadFrame(message.url);
             break;
           case "popContextMenu":
-            popContextMenu(message.event);
+            // popContextMenu(message.event);
+            const event = new Event("contextmenu");
+            document.dispatchEvent(event);
             curScrollPos = message.scrollPos;
             break;
           case "loaded":
@@ -100,9 +56,6 @@
             break;
           case "scroll":
             updateScroll(message.linePercent);
-            break;
-          case "hideContextMenu":
-            hideContextMenu();
             break;
         }
       });
