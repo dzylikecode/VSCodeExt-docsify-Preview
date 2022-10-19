@@ -43,6 +43,12 @@ let httpServer = {
           if (fs.existsSync(filePath)) {
             response.sendFile(filePath);
           } else {
+            response.status(404).send({
+              error: {
+                status: 404,
+                message: "File not found: " + filePath,
+              },
+            });
             console.log("File not found: " + filePath);
           }
         });

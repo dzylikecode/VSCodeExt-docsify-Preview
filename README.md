@@ -59,9 +59,13 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 I have fixed all the issues I met. If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
-The scroll will be in the wrong position when you save the markdown file if the current markdown file can't be found in the sidebar. I find the reason is that Docsify won't execute the function `hook.ready` if the Markdown file is not in the sidebar. So you'd better add the markdown file to the sidebar first before writing the Markdown file with joy.
-
 ## Release Notes
+
+### 1.2.0
+
+fix: issue
+
+see more detail at https://github.com/dzylikecode/VSCodeExt-docsify-Preview/pull/11
 
 ### 1.1.0
 
