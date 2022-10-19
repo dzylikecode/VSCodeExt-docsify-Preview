@@ -10,3 +10,4 @@ vsc-extension-quickstart.md
 docs/**
 node_modules/**
 src/**/*.js
+!src/server/assets/js/*.js
