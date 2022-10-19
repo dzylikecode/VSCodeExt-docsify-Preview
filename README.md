@@ -63,9 +63,9 @@ I have fixed all the issues I met. If you find any issues, please report them to
 
 ### 1.2.0
 
-The scroll will be in the wrong position when you save the markdown file if the current markdown file can't be found in the sidebar. I find the reason is that Docsify won't execute the function `hook.ready` if the Markdown file is not in the sidebar. So you'd better add the markdown file to the sidebar first before writing the Markdown file with joy.
+fix: issue
 
-> fixed, the problem is that I don't respond 404 to the client if the file is not found.
+see more detail at https://github.com/dzylikecode/VSCodeExt-docsify-Preview/pull/11
 
 ### 1.1.0
 

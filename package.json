@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -34,7 +34,7 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./src/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "configuration": {
       "title": "docsify Preview",
