@@ -91,7 +91,7 @@
             loadFrame(message.url);
             break;
           case "popContextMenu":
-            popContextMenu(message.event);
+            popContextMenu(message.event.x, message.event.y);
             curScrollPos = message.scrollPos;
             break;
           case "loaded":
@@ -121,7 +121,7 @@
         document.getElementById("contextMenu").style.display = "none";
       }
 
-      function popContextMenu(e) {
+      function popContextMenu(x, y) {
         log("context");
 
         if (document.getElementById("contextMenu").style.display == "block")
@@ -130,8 +130,8 @@
           let menu = document.getElementById("contextMenu");
 
           menu.style.display = "block";
-          menu.style.left = e.x + "px";
-          menu.style.top = e.y + "px";
+          menu.style.left = x + "px";
+          menu.style.top = y + "px";
         }
       }
       function openInBrowser() {

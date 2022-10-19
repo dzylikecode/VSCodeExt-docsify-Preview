@@ -1,0 +1,38 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,latin-ext);
+ul.contextMenu {
+  list-style: none;
+  margin: 0;
+  padding: 0.3em;
+  font: 300 15px "Roboto", sans-serif;
+  position: absolute;
+  color: white;
+  box-shadow: 0 12px 15px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 0.3em;
+  background-color: #23445e;
+}
+ul.contextMenu * {
+  transition: color 0.4s, background 0.4s;
+}
+ul.contextMenu li {
+  min-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 12px 15px;
+  /*   border-bottom:1px solid #ecf0f1; */
+  cursor: default;
+  border-radius: 0.2em;
+}
+ul.contextMenu li i {
+  width: 1em;
+}
+ul.contextMenu li:first-child i {
+  position: relative;
+  left: 2px;
+}
+ul.contextMenu li a {
+  color: #333;
+  text-decoration: none;
+}
+ul.contextMenu li:hover {
+  background-color: #395973;
+}
