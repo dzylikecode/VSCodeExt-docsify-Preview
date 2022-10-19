@@ -61,6 +61,18 @@ I have fixed all the issues I met. If you find any issues, please report them to
 
 ## Release Notes
 
+### 1.3.0
+
+- fix:
+
+  - need to reload the VSCode if the `index.html` is changed
+
+    now, you can just reopen the Docsify-Preview to make it work
+
+- change
+
+  pretty context menu
+
 ### 1.2.0
 
 fix: issue

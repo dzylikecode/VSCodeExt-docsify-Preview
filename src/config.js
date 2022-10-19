@@ -3,11 +3,12 @@ const fs = require("fs");
 const vscode = require("vscode");
 const webViewHtmlRelativePath = "src/server/webView.html";
 const injectedRelativePath = "src/server/listener/injected.html";
+const webViewAssetsRelativePath = "src/server";
+let webViewAssetsPath;
 let host = "127.0.0.1";
 let indexFileName;
 let docsifyRootPath;
 let extensionPath;
-let injectCode;
 let port;
 let webViewHtmlPath;
 let injectedPath;
@@ -16,8 +17,8 @@ let docsifyIndexFilePath;
 function initExtension(context) {
   extensionPath = context.extensionPath;
   webViewHtmlPath = path.join(extensionPath, webViewHtmlRelativePath);
+  webViewAssetsPath = path.join(extensionPath, webViewAssetsRelativePath);
   injectedPath = path.join(extensionPath, injectedRelativePath);
-  injectCode = fs.readFileSync(injectedPath, "utf8");
 }
 
 function getConfigurationForWorkspace() {
@@ -40,6 +41,9 @@ module.exports = {
   },
   get webViewHtmlPath() {
     return webViewHtmlPath;
+  },
+  get webViewAssetsPath() {
+    return webViewAssetsPath;
   },
   host,
   get port() {
@@ -64,7 +68,7 @@ module.exports = {
     return extensionPath;
   },
   get injectCode() {
-    return injectCode;
+    return fs.readFileSync(injectedPath, "utf8");
   },
   get panelIconPath() {
     return vscode.Uri.file(path.join(this.extensionPath, "assets/icon.svg"));

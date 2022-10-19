@@ -1,6 +1,8 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const config = require("../config.js");
+const path = require("path");
+
 // 最好能使用单例模式就好了
 const webViewServer = {
   create() {
@@ -13,11 +15,29 @@ const webViewServer = {
         retainContextWhenHidden: true,
       }
     );
+    let innerPanel = this.panel;
     this.panel.iconPath = config.panelIconPath;
     try {
-      this.panel.webview.html = fs.readFileSync(config.webViewHtmlPath, "utf8");
+      this.panel.webview.html = getHtmlContent(config.webViewHtmlPath);
     } catch (err) {
       console.log(err);
+    }
+    return;
+    function getHtmlContent(filePath) {
+      let html = fs.readFileSync(filePath, "utf8");
+      return replaceVarialbe(html);
+      function replaceVarialbe(html) {
+        return html.replace(/\$\{([^\}]+)\}/g, (match, src) => {
+          return getSrcPath(src);
+        });
+      }
+      function getSrcPath(srcPath) {
+        const onDiskPath = vscode.Uri.file(
+          path.join(config.webViewAssetsPath, srcPath)
+        );
+        const styleSrc = innerPanel.webview.asWebviewUri(onDiskPath);
+        return styleSrc;
+      }
     }
   },
   postMessage(message) {
