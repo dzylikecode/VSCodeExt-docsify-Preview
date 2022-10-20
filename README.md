@@ -67,6 +67,14 @@ I have fixed all the issues I met. If you find any issues, please report them to
 
 ## Release Notes
 
+### 1.5.0
+
+- feature:
+
+  - preview context menu
+
+    - power off
+
 ### 1.4.0
 
 - feature:
