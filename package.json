@@ -34,7 +34,7 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./out/extension.js",
+  "main": "./src/extension.js",
   "contributes": {
     "configuration": {
       "title": "docsify Preview",
@@ -58,7 +58,7 @@
     "commands": [
       {
         "command": "docsify-preview.sidePreview",
-        "title": "Show Docsify preview to the side",
+        "title": "Show Docsify Preview to the Side",
         "category": "menubar",
         "icon": {
           "light": "./assets/Preview.svg",
@@ -72,6 +72,13 @@
           "command": "docsify-preview.sidePreview",
           "when": "editorLangId == markdown",
           "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "docsify-preview.sidePreview",
+          "when": "editorLangId == markdown",
+          "group": "docsify-preview"
         }
       ]
     }

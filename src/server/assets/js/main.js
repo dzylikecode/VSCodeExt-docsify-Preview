@@ -98,3 +98,10 @@ function openDeveloperTools() {
     command: "openDeveloperTools",
   });
 }
+
+function closePreview() {
+  hideContextMenu();
+  vscode.postMessage({
+    command: "closePreview",
+  });
+}
