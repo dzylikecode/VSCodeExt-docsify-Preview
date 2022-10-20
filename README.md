@@ -31,7 +31,13 @@
 
     ![](assets/feature/go-here.gif)
 
-If you are interested in my Docsify template, welcome to visit my [Docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template), which supports mindmap, math formula, mermaid, jsRunkit, and so on.
+  - open develop tools
+
+    ![](assets/2022-10-20-10-22-01.png)
+
+    > the hint to find your source file in the developer tools
+
+If you are interested in my Docsify template, welcome to visit my [Docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template) or fork this [repo](https://github.com/dzylikecode/template-docsify), which supports mindmap, math formula, mermaid, jsRunkit, and so on.
 
 If you want to paste images in markdown, welcome to use my other plugin:[md-paste-enhanced](https://marketplace.visualstudio.com/items?itemName=dzylikecode.md-paste-enhanced).
 
@@ -60,6 +66,14 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 I have fixed all the issues I met. If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
+
+### 1.4.0
+
+- feature:
+
+  - context menu
+
+    open develop tools
 
 ### 1.3.0
 

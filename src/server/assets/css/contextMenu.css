@@ -21,11 +21,16 @@ ul.contextMenu li {
   border-radius: 0.2em;
 }
 ul.contextMenu li i {
-  width: 1em;
+  width: 1.2em;
 }
 ul.contextMenu li i.fa-file-lines {
   position: relative;
   left: 2px;
+}
+
+ul.contextMenu li i.fa-code {
+  position: relative;
+  right: 3px;
 }
 
 ul.contextMenu li:hover {

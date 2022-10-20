@@ -61,6 +61,10 @@ async function main(context, disposable) {
     } else if (message.command == "loaded") {
       server.url = server.parseUrl(message.url);
       server.setTitile(`[Preview] ${message.url}`);
+    } else if (message.command == "openDeveloperTools") {
+      vscode.commands.executeCommand(
+        "workbench.action.webview.openDeveloperTools"
+      );
     }
     return;
     function goHere(url, linePercent) {

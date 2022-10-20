@@ -51,6 +51,7 @@ window.addEventListener("message", (event) => {
       break;
   }
 });
+
 function loadFrame(url) {
   iframe.src = url;
 }
@@ -74,6 +75,7 @@ function popContextMenu(x, y) {
     $("ul.contextMenu").show().css({ top: y, left: x });
   }
 }
+
 function openInBrowser() {
   log("open in browser");
   hideContextMenu();
@@ -87,5 +89,12 @@ function goHere() {
     command: "goHere",
     url: currentUrl,
     linePercent: curScrollPos,
+  });
+}
+
+function openDeveloperTools() {
+  hideContextMenu();
+  vscode.postMessage({
+    command: "openDeveloperTools",
   });
 }
