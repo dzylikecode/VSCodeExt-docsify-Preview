@@ -4,150 +4,30 @@
     <meta charset="UTF-8" />
     <title>Simple HTTP Server</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body,
-      html,
-      iframe {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-
-    <style type="text/css">
-      .context-menu {
-        position: absolute;
-        text-align: center;
-        background: lightgray;
-        border: 1px solid black;
-      }
-
-      .context-menu ul {
-        padding: 0px;
-        margin: 0px;
-        min-width: 150px;
-        list-style: none;
-      }
-
-      .context-menu ul li {
-        padding-bottom: 7px;
-        padding-top: 7px;
-        border-bottom: 1px solid white;
-        cursor: pointer;
-        text-decoration: none;
-        color: white;
-        background-color: black;
-      }
-
-      .context-menu ul li:hover {
-        background: hsl(100, 50%, 20%);
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="${assets/css/main.css}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="${assets/css/contextMenu.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="${assets/css/contextMenu-lib-font.css}"
+    />
+    <script src="${assets/js/font-awesome.js}"></script>
+    <script src="${assets/js/jquery.min.js}"></script>
   </head>
   <body>
-    <div id="contextMenu" class="context-menu" style="display: none">
-      <ul>
-        <li onclick="goHere()">Go here</li>
-        <li onclick="openInBrowser()">Open in browser</li>
-      </ul>
-    </div>
+    <ul class="contextMenu" hidden>
+      <li onclick="goHere()">
+        <i class="fa-solid fa-location-crosshairs"></i> Go here
+      </li>
+      <li onclick="openInBrowser()">
+        <i class="fa-solid fa-file-lines"></i> Open in Browser
+      </li>
+    </ul>
     <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>
-    <script>
-      const vscode = acquireVsCodeApi();
-      const iframe = document.getElementById("Server");
-      const log = (msg) => {
-        console.log("webview: ");
-        console.log(msg);
-      };
-      let currentUrl;
-      let curScrollPos = 0;
-
-      log("Hello!");
-
-      // Handle the message inside the webview
-      window.addEventListener("message", (event) => {
-        const message = event.data; // The JSON data our extension sent
-        log(JSON.stringify(message));
-
-        switch (message.command) {
-          case "jumpFirstTime":
-            loadFrame(message.url);
-            iframe.onload = () => {
-              if (message.linePercent) {
-                // 避免每次reload都是调用下面的函数
-                iframe.contentWindow.postMessage(
-                  {
-                    command: "jumpFirstTime",
-                    linePercent: message.linePercent,
-                  },
-                  "*"
-                );
-                message.linePercent = undefined; // 由于闭包, 需要将其undefined
-              }
-            };
-            break;
-          case "jump":
-            loadFrame(message.url);
-            break;
-          case "popContextMenu":
-            popContextMenu(message.event);
-            curScrollPos = message.scrollPos;
-            break;
-          case "loaded":
-            currentUrl = message.url;
-            vscode.postMessage({ command: "loaded", url: currentUrl });
-            break;
-          case "scroll":
-            updateScroll(message.linePercent);
-            break;
-          case "hideContextMenu":
-            hideContextMenu();
-            break;
-        }
-      });
-      function loadFrame(url) {
-        iframe.src = url;
-      }
-
-      function updateScroll(linePercent) {
-        iframe.contentWindow.postMessage(
-          { command: "scroll", linePercent: linePercent },
-          "*"
-        );
-      }
-
-      function hideContextMenu() {
-        document.getElementById("contextMenu").style.display = "none";
-      }
-
-      function popContextMenu(e) {
-        log("context");
-
-        if (document.getElementById("contextMenu").style.display == "block")
-          hideContextMenu();
-        else {
-          let menu = document.getElementById("contextMenu");
-
-          menu.style.display = "block";
-          menu.style.left = e.x + "px";
-          menu.style.top = e.y + "px";
-        }
-      }
-      function openInBrowser() {
-        log("open in browser");
-        hideContextMenu();
-        vscode.postMessage({ command: "openInBrowser" });
-      }
-      function goHere() {
-        log("go here");
-        hideContextMenu();
-        vscode.postMessage({
-          command: "goHere",
-          url: currentUrl,
-          linePercent: curScrollPos,
-        });
-      }
-    </script>
+    <script src="${assets/js/main.js}"></script>
   </body>
 </html>
