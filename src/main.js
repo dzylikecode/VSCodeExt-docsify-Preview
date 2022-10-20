@@ -65,6 +65,8 @@ async function main(context, disposable) {
       vscode.commands.executeCommand(
         "workbench.action.webview.openDeveloperTools"
       );
+    } else if (message.command == "closePreview") {
+      server.close();
     }
     return;
     function goHere(url, linePercent) {

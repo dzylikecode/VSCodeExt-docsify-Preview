@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -58,7 +58,7 @@
     "commands": [
       {
         "command": "docsify-preview.sidePreview",
-        "title": "Show Docsify preview to the side",
+        "title": "Show Docsify Preview to the Side",
         "category": "menubar",
         "icon": {
           "light": "./assets/Preview.svg",
@@ -72,6 +72,13 @@
           "command": "docsify-preview.sidePreview",
           "when": "editorLangId == markdown",
           "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "docsify-preview.sidePreview",
+          "when": "editorLangId == markdown",
+          "group": "docsify-preview"
         }
       ]
     }

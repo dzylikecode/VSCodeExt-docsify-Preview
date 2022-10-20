@@ -19,15 +19,22 @@
     <script src="${assets/js/jquery.min.js}"></script>
   </head>
   <body>
-    <ul class="contextMenu" hidden>
-      <li onclick="goHere()">
+    <ul
+      class="contextMenu"
+      data-vscode-context='{"preventDefaultContextMenuItems": true}'
+      hidden
+    >
+      <li onclick="goHere()" oncontextmenu="goHere()">
         <i class="fa-solid fa-location-crosshairs"></i> Go here
       </li>
-      <li onclick="openInBrowser()">
+      <li onclick="openInBrowser()" oncontextmenu="openInBrowser()">
         <i class="fa-solid fa-file-lines"></i> Open in Browser
       </li>
-      <li onclick="openDeveloperTools()">
+      <li onclick="openDeveloperTools()" oncontextmenu="openDeveloperTools()">
         <i class="fa-solid fa-code"></i> Open Developer Tools
+      </li>
+      <li onclick="closePreview()" oncontextmenu="closePreview()">
+        <i class="fa-solid fa-power-off"></i> Close Preview
       </li>
     </ul>
     <iframe id="Server" allowTransparency="false" frameborder="0"></iframe>

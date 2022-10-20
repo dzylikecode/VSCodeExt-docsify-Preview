@@ -23,7 +23,7 @@
 
   ![](assets/feature/reload.gif)
 
-- context menu
+- preview: context menu
 
   - Open in browser
 
@@ -36,6 +36,12 @@
     ![](assets/2022-10-20-10-22-01.png)
 
     > the hint to find your source file in the developer tools
+
+  - close preview
+
+- editor: context menu
+
+  - open Docsify preview to the side
 
 If you are interested in my Docsify template, welcome to visit my [Docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template) or fork this [repo](https://github.com/dzylikecode/template-docsify), which supports mindmap, math formula, mermaid, jsRunkit, and so on.
 
@@ -63,9 +69,31 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 ## Known Issues
 
-I have fixed all the issues I met. If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
+You should open the preview in the browser if click the external link in the preview. The reason why it can't open it inside the preview is the limitation of Webview.
+
+> may be I can try open it in the browser.
+
+If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
+
+### 1.5.0
+
+- feature:
+
+  - the context menu of the preview
+
+    - add: close preview
+
+    - right-click the button will trigger the same event as clicking it.
+
+  - the context menu of the editor
+
+    - add: show Docsify preview to the side
+
+- fix:
+
+  prevent the origin context menu when right-clicking the context menu
 
 ### 1.4.0
 
