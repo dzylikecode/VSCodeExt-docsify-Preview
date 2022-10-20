@@ -63,7 +63,11 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 ## Known Issues
 
-I have fixed all the issues I met. If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
+You should open the preview in the browser if click the external link in the preview. The reason why it can't open it inside the preview is the limitation of Webview.
+
+> may be I can't try open it in the browser.
+
+If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
 
