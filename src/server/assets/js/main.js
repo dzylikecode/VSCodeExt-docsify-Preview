@@ -49,6 +49,9 @@ window.addEventListener("message", (event) => {
     case "hideContextMenu":
       hideContextMenu();
       break;
+    case "openLink":
+      vscode.postMessage(message);
+      break;
   }
 });
 

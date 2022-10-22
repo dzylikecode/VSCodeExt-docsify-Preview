@@ -99,6 +99,23 @@
             }
           }
         });
+        hook.doneEach(() => {
+          openBlankLink();
+          return;
+          function openBlankLink() {
+            document.querySelectorAll("a[target='_blank']").forEach((link) => {
+              link.addEventListener("click", (e) => {
+                window.parent.window.postMessage(
+                  {
+                    command: "openLink",
+                    url: link.href,
+                  },
+                  "*"
+                );
+              });
+            });
+          }
+        });
         hook.ready(() => {
           // this why I can't scroll window directly
           restoreScrollState();
