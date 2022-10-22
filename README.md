@@ -69,7 +69,7 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 ## Known Issues
 
-You may open the duplicate tab in the browser if click the external link.
+You may open the duplicate tab in the browser if clicking the external link.
 
 If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
