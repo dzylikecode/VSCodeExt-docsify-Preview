@@ -69,6 +69,8 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 ## Known Issues
 
+You may open the duplicate tab in the browser if click the external link.
+
 If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
@@ -77,7 +79,7 @@ If you find any issues, please report them to [issue](https://github.com/dzylike
 
 fixed: failed to open an external link
 
-> Now you can open the external link in the preview, and then it will be opened in the browser.
+> Now you can open the external link in the preview, and then it will be opened in the browser. But the problem is that you may open the duplicate tab in the browser. I will try to fix it in the future.
 
 ### 1.5.0
 
