@@ -67,6 +67,8 @@ async function main(context, disposable) {
       );
     } else if (message.command == "closePreview") {
       server.close();
+    } else if (message.command == "openLink") {
+      vscode.env.openExternal(message.url);
     }
     return;
     function goHere(url, linePercent) {
