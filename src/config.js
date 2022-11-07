@@ -14,6 +14,9 @@ let webViewHtmlPath;
 let injectedPath;
 let docsifyIndexFilePath;
 
+// user config
+// extension config
+
 function initExtension(context) {
   extensionPath = context.extensionPath;
   webViewHtmlPath = path.join(extensionPath, webViewHtmlRelativePath);
