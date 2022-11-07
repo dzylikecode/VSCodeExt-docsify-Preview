@@ -9,6 +9,7 @@ let isClosed = false;
 async function main(context, disposable) {
   config.getConfigurationForWorkspace();
   let isConfigured = false;
+  // 大概猜测出需要结束这次的调用才能使得工作区的改变生效, 所以使用命令调用比较好
   while (isConfigured == false) {
     config.initWorkspace();
     try {
@@ -98,7 +99,7 @@ async function main(context, disposable) {
         });
     }
   });
-
+  // 我感觉这是一直订阅, 所以应该初始化一次就好了
   vscode.workspace.onDidSaveTextDocument(() => {
     if (!isClosed) {
       server.reload();
