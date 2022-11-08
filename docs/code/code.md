@@ -12,6 +12,8 @@
 
 ## 模型
 
+当前模型: [model-7](#model-7)
+
 ### model-1
 
 - :x:
@@ -203,6 +205,27 @@ flowchart LR
 ```
 
 > 碰到问题[reload-时-scroll-不起作用](#reload-时-scroll-不起作用)
+
+## model-7
+
+- :heavy_check_mark: -> 1.0.0 - now
+
+结合了 [model-5](#model-5) 和 [model-6](#model-6)
+
+> 将 vscode 与 html 的 message 传递分成了两类
+
+- websocket
+
+  message:
+
+  - markdown saved
+
+- iframe
+
+  message:
+
+  - scroll sync
+  - open the external link
 
 ## feature
 
