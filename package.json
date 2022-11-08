@@ -63,7 +63,7 @@
     "commands": [
       {
         "command": "docsify-preview.sidePreview",
-        "title": "Show Docsify Preview to the Side",
+        "title": "docsify: Open/Close the side Preview",
         "category": "menubar",
         "icon": {
           "light": "./assets/Preview.svg",
@@ -72,7 +72,7 @@
       },
       {
         "command": "docsify-preview.fullPreview",
-        "title": "Open Docsify Preview"
+        "title": "docsify: Open the full Preview"
       }
     ],
     "menus": {
