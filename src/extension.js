@@ -1,21 +1,28 @@
+/* jslint esversion:11 */
+const logger = require("./utils/logger.js");
 const vscode = require("vscode");
-const { main } = require("./main.js");
-const config = require("./config.js");
-const server = require("./server/server.js");
+const preview = require("./preview.js");
+const extensionConfig = require("./extensionConfig.js");
 
 function activate(context) {
-  config.initExtension(context);
-  let disposable = vscode.commands.registerCommand(
-    "docsify-preview.sidePreview",
-    async () => main(context, disposable)
-  );
+  logger.init("Docsify Preview", "markdown");
+  extensionConfig.init(context);
+  preview.init();
+  const registerCommand = (menu, fn) =>
+    context.subscriptions.push(vscode.commands.registerCommand(menu, fn));
 
-  context.subscriptions.push(disposable);
+  registerCommand("docsify-preview.sidePreview", () =>
+    preview.visible ? preview.close() : preview.open(vscode.ViewColumn.Two)
+  );
+  registerCommand(
+    "docsify-preview.fullPreview",
+    () => preview.open(vscode.ViewColumn.One) //  打开了后, 语言环境就不是markdown了, 但是可以用 ctrl+w 关闭
+  );
 }
 
 // this method is called when your extension is deactivated
 function deactivate() {
-  server.close();
+  preview.close();
 }
 
 module.exports = {

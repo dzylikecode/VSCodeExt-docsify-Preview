@@ -41,7 +41,8 @@
 
 - editor: context menu
 
-  - open Docsify preview to the side
+  - docsify: open/close the side preview
+  - docsify: open the full preview
 
 If you are interested in my Docsify template, welcome to visit my [Docsify-template](https://dzylikecode.github.io/#/blog/docsify/?id=template) or fork this [repo](https://github.com/dzylikecode/template-docsify), which supports mindmap, math formula, mermaid, jsRunkit, and so on.
 
@@ -51,13 +52,13 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
 ## Extension Settings
 
-- `docsifyPreview.port`
+- `docsifyPreview.port`: number
 
   Set the port of the server
 
   - the default value is `10812`
 
-- `docsifyPreview.indexFile`
+- `docsifyPreview.indexFile`: string
 
   Set the path of your custom `index.html`
 
@@ -67,6 +68,22 @@ If you want to paste images in markdown, welcome to use my other plugin:[md-past
 
   - the default value is `/docs/index.html`
 
+- `docsifyPreview.followLinkWithCtrl`: boolean
+
+  Set whether to open the link with `Ctrl` pressed
+
+  - the default value is `false`
+
+## Shortcuts
+
+- `Ctrl+Shift+A`: open/close the side preview
+- `Ctrl+Shift+V`: open the full preview
+
+## skills
+
+- full preview (`Ctrl+Shift+V`) => open the markdown from the preview (`go Here`) => show the markdown to the side (`Ctrl+Shift+A`)
+- close the full preview (`Ctrl+W`)
+
 ## Known Issues
 
 You may open the duplicate tab in the browser if clicking the external link.
@@ -74,6 +91,15 @@ You may open the duplicate tab in the browser if clicking the external link.
 If you find any issues, please report them to [issue](https://github.com/dzylikecode/VSCodeExt-docsify-Preview/issues)
 
 ## Release Notes
+
+### 1.7.0
+
+- refactor the code
+- +:shortcut `ctrl+alt+a`: open/close the side preview
+- +:shortcut `ctrl+alt+v`: open the full preview
+- follow the link with `ctrl` pressed
+
+  this may help you get rid of the annoying popup window if enabled
 
 ### 1.6.0
 

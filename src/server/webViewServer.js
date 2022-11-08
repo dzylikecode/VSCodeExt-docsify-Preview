@@ -1,26 +1,28 @@
+/* jslint esversion:11 */
 const vscode = require("vscode");
 const fs = require("fs");
-const config = require("../config.js");
+const extensionConfig = require("../extensionConfig.js");
 const path = require("path");
+const logger = require("../utils/logger.js");
 
 // 最好能使用单例模式就好了
 const webViewServer = {
-  create() {
+  create(viewColumn) {
     this.panel = vscode.window.createWebviewPanel(
       "docsifyPreviewer", // Webview id
-      "docsify Preview", // Webview title
-      { viewColumn: vscode.ViewColumn.Two, preserveFocus: true }, // open the second column for preview inside editor
+      "docsify Preview",
+      { viewColumn: viewColumn, preserveFocus: decideFocus(viewColumn) },
       {
         enableScripts: true,
         retainContextWhenHidden: true,
       }
     );
     let innerPanel = this.panel;
-    this.panel.iconPath = config.panelIconPath;
+    this.panel.iconPath = extensionConfig.panelIconPath;
     try {
-      this.panel.webview.html = getHtmlContent(config.webViewHtmlPath);
+      this.panel.webview.html = getHtmlContent(extensionConfig.webViewHtmlPath);
     } catch (err) {
-      console.log(err);
+      logger.error(err);
     }
     return;
     function getHtmlContent(filePath) {
@@ -33,7 +35,7 @@ const webViewServer = {
       }
       function getSrcPath(srcPath) {
         const onDiskPath = vscode.Uri.file(
-          path.join(config.webViewAssetsPath, srcPath)
+          path.join(extensionConfig.webViewAssetsPath, srcPath)
         );
         const styleSrc = innerPanel.webview.asWebviewUri(onDiskPath);
         return styleSrc;
@@ -74,9 +76,19 @@ const webViewServer = {
       this.panel = null;
     });
   },
+  reveal(viewColumn) {
+    this.panel?.reveal(viewColumn, decideFocus(viewColumn));
+  },
   close() {
-    this.panel.dispose();
+    this.panel?.dispose();
+  },
+  get visible() {
+    return this.panel?.visible;
   },
 };
+
+function decideFocus(viewColumn) {
+  return vscode.ViewColumn.Two == viewColumn;
+}
 
 module.exports = webViewServer;

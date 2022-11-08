@@ -2,7 +2,7 @@
   "name": "docsify-preview",
   "displayName": "docsify-Preview",
   "description": "write docs easily with docsify",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -52,18 +52,27 @@
           "default": "/docs/index.html",
           "pattern": "/|/[^\\/]",
           "description": "Set Custom index file of Live Server. \nTo change index file, use '/' and relative path from workspace. \nExample: /index.html"
+        },
+        "docsifyPreview.followLinkWithCtrl": {
+          "type": "boolean",
+          "default": false,
+          "description": "follow link(Ctrl + Click) without annoying pop window if enabled"
         }
       }
     },
     "commands": [
       {
         "command": "docsify-preview.sidePreview",
-        "title": "Show Docsify Preview to the Side",
+        "title": "docsify: Open/Close the side Preview",
         "category": "menubar",
         "icon": {
           "light": "./assets/Preview.svg",
           "dark": "./assets/Preview_inverse.svg"
         }
+      },
+      {
+        "command": "docsify-preview.fullPreview",
+        "title": "docsify: Open the full Preview"
       }
     ],
     "menus": {
@@ -79,9 +88,28 @@
           "command": "docsify-preview.sidePreview",
           "when": "editorLangId == markdown",
           "group": "docsify-preview"
+        },
+        {
+          "command": "docsify-preview.fullPreview",
+          "when": "editorLangId == markdown",
+          "group": "docsify-preview"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "docsify-preview.sidePreview",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "docsify-preview.fullPreview",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorLangId == markdown"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
