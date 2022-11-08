@@ -75,6 +75,12 @@ If you find any issues, please report them to [issue](https://github.com/dzylike
 
 ## Release Notes
 
+### 1.7.0
+
+- refactor the code
+- +:keybinding `ctrl+alt+a` to open the preview to the side
+- +:keybinding `ctrl+alt+q` to close the preview
+
 ### 1.6.0
 
 fixed: failed to open an external link

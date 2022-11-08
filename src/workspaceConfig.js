@@ -1,4 +1,4 @@
-/** jshint ES6 */
+/* jslint esversion:11 */
 const path = require("path");
 const vscode = require("vscode");
 
@@ -25,9 +25,9 @@ function WorkspaceConfig() {
     get port() {
       return port;
     },
-    set port(value) {
+    async setPort(value) {
       port = value;
-      vscode.workspace
+      return vscode.workspace
         .getConfiguration("docsifyPreview")
         .update("port", value, false);
     },
@@ -43,14 +43,19 @@ function WorkspaceConfig() {
     get docsifyIndexFilePath() {
       return docsifyIndexFilePath;
     },
-    set docsifyIndexFilePath(newPath) {
+    async setDocsifyIndexFilePath(newPath) {
       docsifyIndexFilePath = newPath;
-      vscode.workspace
+      return vscode.workspace
         .getConfiguration("docsifyPreview")
         .update("indexFile", newPath, false);
     },
     get indexFileName() {
       return indexFileName;
+    },
+    get followLinkWithCtrl() {
+      return vscode.workspace
+        .getConfiguration("docsifyPreview")
+        .get("followLinkWithCtrl");
     },
   };
 }

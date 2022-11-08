@@ -1,6 +1,8 @@
+/* jslint esversion:11 */
 const http = require("http");
 const fs = require("fs");
-const config = require("../config.js");
+const logger = require("../utils/logger.js");
+const workspaceConfig = require("../workspaceConfig.js");
 const listener = require("./listener/listener.js");
 const express = require("express");
 const app = express();
@@ -13,12 +15,12 @@ let httpServer = {
     this.server = createServer(html);
     listener.attach(this.server);
     this.server.listen(port, host, () => {
-      console.log(`Listening on port ${port}`);
+      logger.info(`Listening on port ${port}`);
       resolve(true);
     });
     return;
     function getDocsifyIndexHtml() {
-      let docsifyIndexHtmlPath = parseFilePath(config.indexFileName);
+      let docsifyIndexHtmlPath = parseFilePath(workspaceConfig.indexFileName);
       if (fs.existsSync(docsifyIndexHtmlPath) == false) {
         reject("IndexNotFound");
       }
@@ -28,7 +30,7 @@ let httpServer = {
       let expressApp = createApp(html);
       let server = http.createServer(expressApp);
       server.on("error", function (err) {
-        console.log(err);
+        logger.error(err);
         reject("PortOccupied");
       });
       return server;
@@ -49,7 +51,7 @@ let httpServer = {
                 message: "File not found: " + filePath,
               },
             });
-            console.log("File not found: " + filePath);
+            logger.warn("File not found: " + filePath);
           }
         });
         return app;
@@ -77,7 +79,7 @@ let httpServer = {
 };
 
 function parseFilePath(filePath) {
-  let docsifyFilePath = path.join(config.docsifyRootPath, filePath);
+  let docsifyFilePath = path.join(workspaceConfig.docsifyRootPath, filePath);
   return docsifyFilePath;
 }
 

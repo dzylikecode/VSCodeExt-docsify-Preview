@@ -1,12 +1,14 @@
+/* jslint esversion:11 */
 const ws = require("ws");
-const config = require("../../config.js");
+const extensionConfig = require("../../extensionConfig.js");
+const logger = require("../../utils/logger.js");
 
 let webSocketServer = {
   attach(server) {
     this.sockets = [];
     this.websocketServer = new ws.Server({ server });
     this.websocketServer.on("connection", (socket) => {
-      console.log("Socket connected");
+      logger.info("Socket connected");
       socket.on("message", (message) => {
         console.log("Message received: " + message);
         message = "" + message;
@@ -14,17 +16,17 @@ let webSocketServer = {
       });
       this.sockets.push(socket);
       socket.onclose = () => {
-        console.log("Socket disconnected");
+        logger.info("Socket disconnected");
         this.sockets.splice(this.sockets.indexOf(socket), 1);
       };
     });
-    console.log("Created websocket, listing");
+    logger.info("Creating websocket");
   },
   postMessage(message) {
     this.sockets.forEach((socket) => {
       socket.send(JSON.stringify(message), (error) => {
         if (!error) return;
-        console.error(error);
+        logger.error(error);
       });
     });
   },
@@ -37,12 +39,12 @@ let webSocketServer = {
   injectHtml(html) {
     let index = html.indexOf("</body>");
     let newHtml = html.substring(0, index);
-    newHtml += config.injectCode;
+    newHtml += extensionConfig.injectCode;
     newHtml += html.substring(index);
     return newHtml;
   },
   close() {
-    console.log("Closing websocket");
+    logger.info("Closing websocket");
     this.websocketServer.close();
   },
 };

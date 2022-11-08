@@ -1,5 +1,6 @@
+/* jslint esversion:11 */
 const vscode = require("vscode");
-const _ = require("lodash");
+
 function Logger() {
   let channel;
 
@@ -7,7 +8,7 @@ function Logger() {
     channel = vscode.window.createOutputChannel(name, langID);
   };
 
-  const logCurry = _.curry(log);
+  const logCurry = (level) => (message) => log(level, message);
 
   this.info = logCurry("info");
   this.error = logCurry("error");

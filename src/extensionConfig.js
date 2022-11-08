@@ -1,3 +1,4 @@
+/* jslint esversion:11 */
 const path = require("path");
 const fs = require("fs");
 const vscode = require("vscode");
