@@ -1,13 +1,13 @@
 /* jslint esversion:11 */
 const vscode = require("vscode");
-const fs = require("fs");
+const fs = require("../utils/vsFile.js");
 const extensionConfig = require("../extensionConfig.js");
 const path = require("path");
 const logger = require("../utils/logger.js");
 
 // 最好能使用单例模式就好了
 const webViewServer = {
-  create(viewColumn) {
+  async create(viewColumn) {
     this.panel = vscode.window.createWebviewPanel(
       "docsifyPreviewer", // Webview id
       "docsify Preview",
@@ -20,13 +20,15 @@ const webViewServer = {
     let innerPanel = this.panel;
     this.panel.iconPath = extensionConfig.panelIconPath;
     try {
-      this.panel.webview.html = getHtmlContent(extensionConfig.webViewHtmlPath);
+      this.panel.webview.html = await getHtmlContent(
+        extensionConfig.webViewHtmlPath
+      );
     } catch (err) {
       logger.error(err);
     }
     return;
-    function getHtmlContent(filePath) {
-      let html = fs.readFileSync(filePath, "utf8");
+    async function getHtmlContent(filePath) {
+      let html = await fs.readFile(filePath);
       return replaceVarialbe(html);
       function replaceVarialbe(html) {
         return html.replace(/\$\{([^\}]+)\}/g, (match, src) => {

@@ -6,7 +6,7 @@ let server = {
   async create(host, port, viewColumn) {
     let res = await createHttpServer(host, port);
     if (res) {
-      webViewServer.create(viewColumn);
+      await webViewServer.create(viewColumn);
     }
     return res;
     function createHttpServer(host, port) {

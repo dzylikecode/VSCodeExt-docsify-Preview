@@ -4,9 +4,9 @@ const vscode = require("vscode");
 const preview = require("./preview.js");
 const extensionConfig = require("./extensionConfig.js");
 
-function activate(context) {
-  logger.init("Docsify Preview", "markdown");
-  extensionConfig.init(context);
+async function activate(context) {
+  logger.init("Docsify Preview");
+  await extensionConfig.init(context);
   preview.init();
   const registerCommand = (menu, fn) =>
     context.subscriptions.push(vscode.commands.registerCommand(menu, fn));

@@ -4,8 +4,8 @@ const vscode = require("vscode");
 function Logger() {
   let channel;
 
-  this.init = (name, langID) => {
-    channel = vscode.window.createOutputChannel(name, langID);
+  this.init = (name) => {
+    channel = vscode.window.createOutputChannel(name);
   };
 
   const logCurry = (level) => (message) => log(level, message);
@@ -17,7 +17,7 @@ function Logger() {
   return;
   function log(level, message) {
     const curTime = new Date().toLocaleTimeString();
-    channel.appendLine(`["${level}" - ${curTime}] ${message}`);
+    channel.appendLine(`[${level} - ${curTime}] ${message}`);
   }
 }
 
