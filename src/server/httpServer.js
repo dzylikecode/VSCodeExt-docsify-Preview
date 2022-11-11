@@ -1,6 +1,7 @@
 /* jslint esversion:11 */
 const http = require("http");
 const fs = require("fs");
+const vscode = require("vscode");
 const logger = require("../utils/logger.js");
 const workspaceConfig = require("../workspaceConfig.js");
 const listener = require("./listener/listener.js");
@@ -9,8 +10,8 @@ const app = express();
 const path = require("path");
 
 let httpServer = {
-  create(host, port, resolve, reject) {
-    let docsifyHtml = getDocsifyIndexHtml();
+  async create(host, port, resolve, reject) {
+    let docsifyHtml = await getDocsifyIndexHtml();
     let html = listener.injectHtml(docsifyHtml);
     this.server = createServer(html);
     listener.attach(this.server);
@@ -19,12 +20,16 @@ let httpServer = {
       resolve(true);
     });
     return;
-    function getDocsifyIndexHtml() {
+    async function getDocsifyIndexHtml() {
       let docsifyIndexHtmlPath = parseFilePath(workspaceConfig.indexFileName);
       if (fs.existsSync(docsifyIndexHtmlPath) == false) {
         reject("IndexNotFound");
       }
-      return fs.readFileSync(docsifyIndexHtmlPath, "utf8");
+      return (
+        await vscode.workspace.fs.readFile(
+          vscode.Uri.file(docsifyIndexHtmlPath)
+        )
+      ).toString();
     }
     function createServer(html) {
       let expressApp = createApp(html);
